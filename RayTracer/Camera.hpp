@@ -3,12 +3,14 @@
 
 #include "Shape.hpp"
 #include "Geometry.hpp"
+#include <vector>
 
 class Camera
 {
 public:
-	Camera(){}
-	void render(Shape const&);
+    Camera(float height, float width, int xPixels, int yPixels, Point location, Vector up) : height(height), width(width), xPixels(xPixels), yPixels(yPixels), location(location), up(up){};
+    void look(Vector p);
+    void render(Shape const&, std::vector<float>& rgb);
 private:
 	Point location;
 	Vector lookAt;

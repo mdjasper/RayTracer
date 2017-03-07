@@ -5,16 +5,14 @@
 #include "Geometry.hpp"
 #include <memory>
 
-struct HitRecord
-{
-	HitRecord(float t) :t(t){}
+struct HitRecord{
+	HitRecord(float t, Vector normal) :t(t), normal(normal){}
 	float t;
-	Vector n;
+	Vector normal;
 	float r, g, b;
 };
 
-class Shape
-{
+class Shape{
 public:
 	virtual ~Shape() = 0;
 	virtual BBox getBoundingBox() const = 0;

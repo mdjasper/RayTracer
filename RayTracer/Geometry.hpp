@@ -1,6 +1,8 @@
 #ifndef GEOMETRY_HPP
 #define GEOMETRY_HPP
 
+#include <cmath>
+
 struct Point
 {
 	float x, y, z;
@@ -9,6 +11,16 @@ struct Vector
 {
 	float x, y, z;
 };
+
+static double length(Vector v){
+    return sqrt(v.x*v.x + v.y*v.y + v.z*v.z);
+}
+
+static Vector normalize(Vector v){
+    float a = length(v);
+    return {v.x/a, v.y/a, v.z/a};
+}
+
 struct Ray
 {
 	Point o;
@@ -35,8 +47,7 @@ T operator * (T a, float b)
 template <typename T,typename U>
 T cross(T a, U b)
 {
-	//TODO implement cross product
-	return a;
+    return T{(a.y * b.z) - (a.z * b.y), -((a.x * b.z) - (a.z * b.x)), (a.x * b.y) - (a.y * b.x)};
 }
 
 template <typename T,typename U>

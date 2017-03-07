@@ -10,5 +10,22 @@
 #define Triangle_hpp
 
 #include <stdio.h>
+#include "Shape.hpp"
+
+class Triangle : public Shape{
+public:
+    Triangle(Vector a, Vector b, Vector c) :a(a), b(b), c(c){}
+    virtual ~Triangle();
+    BBox getBoundingBox() const override;
+private:
+    std::unique_ptr<HitRecord> intersect(Ray) const override;
+    Vector a, b, c;
+    float triangle_intersection( const Vector   V1,  // Triangle vertices
+                                 const Vector   V2,
+                                 const Vector   V3,
+                                 const Vector    O,  //Ray origin
+                                 const Vector    D  //Ray direction
+    ) const;
+};
 
 #endif /* Triangle_hpp */

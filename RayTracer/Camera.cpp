@@ -1,9 +1,15 @@
 #include "Camera.hpp"
 #include "Geometry.hpp"
 #include <iostream>
+#include <vector>
 
-void Camera::render(Shape const& s)
+void Camera::look(Vector p){
+    lookAt = p;
+};
+
+void Camera::render(Shape const& s, std::vector<float>& rgb)
 {
+    
 	auto filmCenter = location + lookAt;
 	auto v = cross(lookAt, up);
 	auto perPixelU = up / (height / yPixels);
@@ -18,19 +24,25 @@ void Camera::render(Shape const& s)
 		for (int j = 0; j < yPixels; ++j)
 		{
 			//find point on film
-			auto filmPoint = topLeft + perPixelV * static_cast<float>(i) + perPixelU * static_cast<float>(j);
-			Ray r{ location, filmPoint - location };
+			Point filmPoint = topLeft + perPixelV * static_cast<float>(i) + perPixelU * static_cast<float>(j);
+			Ray r{location, filmPoint - location};
 			auto hit = s.hit(r);
 			//PPM output
 			if (hit)
 			{
-				std::cout << hit->r << " " << hit->g << " " << hit->b << " ";
+//				std::cout << hit->r << ", " << hit->g << ", " << hit->b << ", ";
+                rgb.push_back(hit->r);
+                rgb.push_back(hit->g);
+                rgb.push_back(hit->b);
 			}
 			else
 			{
-				std::cout << "0 0 0 ";
+//				std::cout << "0, 0, 0, ";
+                rgb.push_back(0);
+                rgb.push_back(0);
+                rgb.push_back(0);
 			}
 		}
-		std::cout << std::endl;
+//		std::cout << std::endl;
 	}
 }
