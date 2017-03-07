@@ -21,7 +21,7 @@ public:
     BBox getBoundingBox() const override;
 private:
     std::unique_ptr<HitRecord> intersect(Ray) const override;
-    inline bool Quadratic(float A, float B, float C, float *t0, float *t1) const;
+    bool intersectP(Ray) const override;
     Point o;
     float radius;
     Color c;
