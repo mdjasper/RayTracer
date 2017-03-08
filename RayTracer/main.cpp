@@ -19,7 +19,7 @@ int main()
     
     Point cameraPosition = {1,100,100};
     
-    Vector cameraLook = {1,100,100}, //direction campera is pointing
+    Vector cameraLook = {1,-200,100}, //direction campera is pointing
     cameraUp = {0,1,0}; //y-axis points up
     
     
@@ -35,7 +35,7 @@ int main()
 //    Sphere (point, radius, color);
 //    Triangle tri({100,100,100}, {105,100,110}, {100,105,110});
     
-    Sphere ball({1,1,1}, 10, blue);
+    Sphere ball({1,1,1}, 5, blue);
     
 //    scene.addShape(std::unique_ptr<Shape>(&ground));
 //    scene.addShape(std::unique_ptr<Shape>(&tri));

@@ -29,7 +29,8 @@ bool Sphere::intersectP(Ray r) const {
 std::unique_ptr<HitRecord> Sphere::intersect(Ray r) const
 {
     r.d = normalize(r.d);
-    Vector w = normalize(r.o - o);
+//    std::cout << r.d.x << " " << r.d.y << " " << r.d.z << std::endl;
+    Vector w = (r.o - o);
     float A = dot(r.d, r.d);
     float B = 2 * dot(w, r.d);
     float C = dot(w,w) - (radius*radius);
@@ -38,7 +39,7 @@ std::unique_ptr<HitRecord> Sphere::intersect(Ray r) const
     
     if(D < 0.0f){
         //no intersections
-        std::cout << "no intersections";
+//        std::cout << "no intersections";
         return nullptr;
     } else {
         //an intersection
