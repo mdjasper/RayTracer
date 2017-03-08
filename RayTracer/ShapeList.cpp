@@ -2,7 +2,7 @@
 
 void ShapeList::addShape(std::unique_ptr<Shape> s)
 {
-	shapes.push_back(std::move(s));
+    shapes.push_back(std::move(s));
 }
 BBox ShapeList::getBoundingBox() const
 {

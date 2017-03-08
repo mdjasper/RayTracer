@@ -17,16 +17,16 @@ int main()
     int imageHeight = 500,
         imageWidth = 500;
     
-    Point cameraPosition = {0,100,-100};
+    Point cameraPosition = {1,100,100};
     
-    Vector cameraLookAt = {0,0,0},
-    cameraUp = {0, 1, 0}; //y-axis points up
+    Vector cameraLook = {1,100,100}, //direction campera is pointing
+    cameraUp = {1, 1, 1}; //y-axis points up
     
     
 	//Create Scene
 	ShapeList scene;
     Camera camera(imageHeight, imageWidth, imageHeight, imageWidth, cameraPosition, cameraUp);
-    camera.look(cameraLookAt);
+    camera.look(cameraLook);
     
     //Add shapes to the scene
     
@@ -35,7 +35,7 @@ int main()
 //    Sphere (point, radius, color);
 //    Triangle tri({100,100,100}, {105,100,110}, {100,105,110});
     
-    Sphere ball({0,0,0}, 1, blue);
+    Sphere ball({1,1,1}, 10, blue);
     
 //    scene.addShape(std::unique_ptr<Shape>(&ground));
 //    scene.addShape(std::unique_ptr<Shape>(&tri));
