@@ -7,7 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FEC203B31E6F85E300FC142C /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC203B21E6F85E300FC142C /* Sphere.cpp */; };
+		FEE1EBED1E5B7D120075D4AC /* Image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEE1EBEB1E5B7D120075D4AC /* Image.cpp */; };
+		FEE1EBF11E653F020075D4AC /* Triangle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEE1EBEF1E653F020075D4AC /* Triangle.cpp */; };
 		FEE5A8721E56AFD100BD0AA1 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEE5A8711E56AFD100BD0AA1 /* main.cpp */; };
+		FEE5A8831E56B04400BD0AA1 /* BBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEE5A8781E56B04400BD0AA1 /* BBox.cpp */; };
+		FEE5A8841E56B04400BD0AA1 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEE5A87A1E56B04400BD0AA1 /* Camera.cpp */; };
+		FEE5A8851E56B04400BD0AA1 /* Plane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEE5A87D1E56B04400BD0AA1 /* Plane.cpp */; };
+		FEE5A8861E56B04400BD0AA1 /* Shape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEE5A87F1E56B04400BD0AA1 /* Shape.cpp */; };
+		FEE5A8871E56B04400BD0AA1 /* ShapeList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEE5A8811E56B04400BD0AA1 /* ShapeList.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,8 +31,28 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		FEC203B21E6F85E300FC142C /* Sphere.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sphere.cpp; sourceTree = "<group>"; };
+		FEE1EBEB1E5B7D120075D4AC /* Image.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Image.cpp; sourceTree = "<group>"; };
+		FEE1EBEC1E5B7D120075D4AC /* Image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Image.h; sourceTree = "<group>"; };
+		FEE1EBEE1E5B7E5D0075D4AC /* Debug */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Debug; path = build/Debug; sourceTree = "<group>"; };
+		FEE1EBEF1E653F020075D4AC /* Triangle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Triangle.cpp; sourceTree = "<group>"; };
+		FEE1EBF01E653F020075D4AC /* Triangle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Triangle.hpp; sourceTree = "<group>"; };
 		FEE5A86E1E56AFD100BD0AA1 /* RayTracer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = RayTracer; sourceTree = BUILT_PRODUCTS_DIR; };
 		FEE5A8711E56AFD100BD0AA1 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		FEE5A8781E56B04400BD0AA1 /* BBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BBox.cpp; sourceTree = "<group>"; };
+		FEE5A8791E56B04400BD0AA1 /* BBox.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BBox.hpp; sourceTree = "<group>"; };
+		FEE5A87A1E56B04400BD0AA1 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
+		FEE5A87B1E56B04400BD0AA1 /* Camera.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Camera.hpp; sourceTree = "<group>"; };
+		FEE5A87C1E56B04400BD0AA1 /* Geometry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Geometry.hpp; sourceTree = "<group>"; };
+		FEE5A87D1E56B04400BD0AA1 /* Plane.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Plane.cpp; sourceTree = "<group>"; };
+		FEE5A87E1E56B04400BD0AA1 /* Plane.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Plane.hpp; sourceTree = "<group>"; };
+		FEE5A87F1E56B04400BD0AA1 /* Shape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shape.cpp; sourceTree = "<group>"; };
+		FEE5A8801E56B04400BD0AA1 /* Shape.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Shape.hpp; sourceTree = "<group>"; };
+		FEE5A8811E56B04400BD0AA1 /* ShapeList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShapeList.cpp; sourceTree = "<group>"; };
+		FEE5A8821E56B04400BD0AA1 /* ShapeList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ShapeList.hpp; sourceTree = "<group>"; };
+		FEE5A8881E57F55D00BD0AA1 /* Sphere.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Sphere.h; sourceTree = "<group>"; };
+		FEE5A88B1E584ABC00BD0AA1 /* utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = utils.h; sourceTree = "<group>"; };
+		FEE5A88C1E58FFBD00BD0AA1 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +69,7 @@
 		FEE5A8651E56AFD100BD0AA1 = {
 			isa = PBXGroup;
 			children = (
+				FEE1EBEE1E5B7E5D0075D4AC /* Debug */,
 				FEE5A8701E56AFD100BD0AA1 /* RayTracer */,
 				FEE5A86F1E56AFD100BD0AA1 /* Products */,
 			);
@@ -57,7 +86,26 @@
 		FEE5A8701E56AFD100BD0AA1 /* RayTracer */ = {
 			isa = PBXGroup;
 			children = (
+				FEE5A8781E56B04400BD0AA1 /* BBox.cpp */,
+				FEE5A8791E56B04400BD0AA1 /* BBox.hpp */,
+				FEE5A87A1E56B04400BD0AA1 /* Camera.cpp */,
+				FEE5A87B1E56B04400BD0AA1 /* Camera.hpp */,
+				FEE5A88C1E58FFBD00BD0AA1 /* Constants.h */,
+				FEE5A87C1E56B04400BD0AA1 /* Geometry.hpp */,
+				FEE1EBEB1E5B7D120075D4AC /* Image.cpp */,
+				FEE1EBEC1E5B7D120075D4AC /* Image.h */,
 				FEE5A8711E56AFD100BD0AA1 /* main.cpp */,
+				FEE5A87D1E56B04400BD0AA1 /* Plane.cpp */,
+				FEE5A87E1E56B04400BD0AA1 /* Plane.hpp */,
+				FEE5A87F1E56B04400BD0AA1 /* Shape.cpp */,
+				FEE5A8801E56B04400BD0AA1 /* Shape.hpp */,
+				FEE5A8811E56B04400BD0AA1 /* ShapeList.cpp */,
+				FEE5A8821E56B04400BD0AA1 /* ShapeList.hpp */,
+				FEC203B21E6F85E300FC142C /* Sphere.cpp */,
+				FEE5A8881E57F55D00BD0AA1 /* Sphere.h */,
+				FEE5A88B1E584ABC00BD0AA1 /* utils.h */,
+				FEE1EBEF1E653F020075D4AC /* Triangle.cpp */,
+				FEE1EBF01E653F020075D4AC /* Triangle.hpp */,
 			);
 			path = RayTracer;
 			sourceTree = "<group>";
@@ -119,6 +167,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FEE5A8831E56B04400BD0AA1 /* BBox.cpp in Sources */,
+				FEE5A8841E56B04400BD0AA1 /* Camera.cpp in Sources */,
+				FEE5A8861E56B04400BD0AA1 /* Shape.cpp in Sources */,
+				FEE5A8871E56B04400BD0AA1 /* ShapeList.cpp in Sources */,
+				FEE1EBED1E5B7D120075D4AC /* Image.cpp in Sources */,
+				FEE5A8851E56B04400BD0AA1 /* Plane.cpp in Sources */,
+				FEE1EBF11E653F020075D4AC /* Triangle.cpp in Sources */,
+				FEC203B31E6F85E300FC142C /* Sphere.cpp in Sources */,
 				FEE5A8721E56AFD100BD0AA1 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -216,6 +272,9 @@
 		FEE5A8761E56AFD100BD0AA1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -223,6 +282,9 @@
 		FEE5A8771E56AFD100BD0AA1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -246,6 +308,7 @@
 				FEE5A8771E56AFD100BD0AA1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
