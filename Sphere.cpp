@@ -21,10 +21,6 @@ BBox Sphere::getBoundingBox() const{
     return box;
 };
 
-//std::unique_ptr<HitRecord> intersect(Ray r){
-//    return nullptr;
-//};
-
 bool Sphere::intersectP(Ray r) const {
     return true;
 }
