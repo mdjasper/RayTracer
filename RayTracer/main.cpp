@@ -20,7 +20,7 @@ int main()
     Point cameraPosition = {1,100,100};
     
     Vector cameraLook = {1,100,100}, //direction campera is pointing
-    cameraUp = {1, 1, 1}; //y-axis points up
+    cameraUp = {0,1,0}; //y-axis points up
     
     
 	//Create Scene
