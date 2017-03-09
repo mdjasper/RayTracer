@@ -14,17 +14,17 @@
 int main()
 {
     
-    int imageHeight = 500,
-        imageWidth = 500;
+    int imageHeight = 200,
+        imageWidth = 200;
     
-    Point cameraPosition = {1,100,100};
+    Point cameraPosition = {0,-2,0};
     
-    Vector cameraLook = {1,-200,100}, //direction campera is pointing
-    cameraUp = {0,1,0}; //y-axis points up
+    Vector cameraLook = {1,1,1}, //direction campera is pointing
+    cameraUp = {0,-1,0}; //y-axis points up
     
     
 	//Create Scene
-	ShapeList scene;
+    
     Camera camera(imageHeight, imageWidth, imageHeight, imageWidth, cameraPosition, cameraUp);
     camera.look(cameraLook);
     
@@ -35,19 +35,21 @@ int main()
 //    Sphere (point, radius, color);
 //    Triangle tri({100,100,100}, {105,100,110}, {100,105,110});
     
-    Sphere ball({1,1,1}, 5, blue);
+    Sphere ball({0,5,0}, 0.5, blue);
+//    Sphere ball2({1,5,-1}, 3, red);
     
 //    scene.addShape(std::unique_ptr<Shape>(&ground));
 //    scene.addShape(std::unique_ptr<Shape>(&tri));
     
-    scene.addShape(std::unique_ptr<Shape>(&ball));
+    ShapeList::getInstance().addShape(std::unique_ptr<Shape>(&ball));
+//    scene.addShape(std::unique_ptr<Shape>(&ball2));
     
 
     
 
 	//Render Scene
     std::vector<float> rgb;
-    camera.render(scene, rgb);
+    camera.render(ShapeList::getInstance(), rgb);
 
     //Create Image
     TGAImage *img = new TGAImage(imageWidth,imageHeight);
@@ -59,9 +61,9 @@ int main()
     int i = 0;
     for(int x=imageHeight; x>0; x--){
         for(int y=imageWidth; y>0; y--){
-            c.r = rgb[i];
-            c.g = rgb[i+1];
-            c.b = rgb[i+2];
+            c.r = ValidColor(rgb[i]);
+            c.g = ValidColor(rgb[i+1]);
+            c.b = ValidColor(rgb[i+2]);
             c.a = 255;
             img->setPixel(c,x,y);
             i += 3;
@@ -72,3 +74,5 @@ int main()
     string filename = "test.tga";
     img->WriteImage(filename);
 }
+
+

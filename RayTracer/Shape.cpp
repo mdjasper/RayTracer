@@ -42,7 +42,7 @@ std::unique_ptr<HitRecord> Shape::hit(Ray r)const
         float baseColorValue = dot(normalizedLightDirection, l.d + i->normal);
         
         if(baseColorValue > 1){
-//            std::cout << baseColorValue << "\n";
+            std::cout << baseColorValue << "\n";
         }
         
 //        std::cout << baseColorValue << "\n";

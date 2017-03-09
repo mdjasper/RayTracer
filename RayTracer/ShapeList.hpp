@@ -7,13 +7,19 @@
 class ShapeList : public Shape
 {
 public:
-	ShapeList() :shapes(){}
-	~ShapeList() = default;
+    static ShapeList& getInstance(){
+        static ShapeList instance;
+        return instance;
+    }
 	void addShape(std::unique_ptr<Shape>);
 	BBox getBoundingBox() const override;
 private:
+    ShapeList(){};
 	std::unique_ptr<HitRecord> intersect(Ray) const override;
 	std::vector<std::unique_ptr<Shape>> shapes;
+public:
+    ShapeList(ShapeList const&) = delete;
+    void operator=(ShapeList const&) = delete;
 };
 
 #endif
