@@ -16,15 +16,15 @@
 class Sphere : public Shape
 {
 public:
-    Sphere(Point o, float radius, Color c) :o(o), radius(radius), c(c){}
+    Sphere(Point o, float r, Color c) :origin(o), radius(r), color(c){}
     virtual ~Sphere();
     BBox getBoundingBox() const override;
 private:
     std::unique_ptr<HitRecord> intersect(Ray) const override;
     bool intersectP(Ray) const override;
-    Point o;
+    Point origin;
     float radius;
-    Color c;
+    Color color;
 };
 
 

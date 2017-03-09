@@ -13,7 +13,7 @@
 #include <iostream>
 
 Sphere::~Sphere(){
-    std::cout << "sphere delete called" << std::endl;
+//    std::cout << "sphere delete called" << std::endl;
 }
 
 BBox Sphere::getBoundingBox() const{
@@ -30,7 +30,7 @@ std::unique_ptr<HitRecord> Sphere::intersect(Ray r) const
 {
     r.d = normalize(r.d);
 //    std::cout << r.d.x << " " << r.d.y << " " << r.d.z << std::endl;
-    Vector w = (r.o - o);
+    Vector w = r.o - origin;
     float A = dot(r.d, r.d);
     float B = 2 * dot(w, r.d);
     float C = dot(w,w) - (radius*radius);
@@ -49,8 +49,8 @@ std::unique_ptr<HitRecord> Sphere::intersect(Ray r) const
         //point of the intersection
         Point PHit = r.o + (r.d * t);
         //normal of the intersection
-        Vector NHit = normalize(PHit - o);
-        std::cout << "Sphere D:" << D << "\t Sphere t: " << t << "\n";
+        Vector NHit = normalize(PHit - origin);
+//        std::cout << "Sphere D:" << D << "\t Sphere t: " << t << "\n";
         return make_unique<HitRecord>(t, NHit);
     }
 }

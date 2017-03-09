@@ -25,7 +25,7 @@ void Camera::render(Shape const& s, std::vector<float>& rgb)
 		{
 			//find point on film
 			Point filmPoint = topLeft + perPixelV * static_cast<float>(i) + perPixelU * static_cast<float>(j);
-            std::cout << filmPoint.x << " " << filmPoint.y << " " << filmPoint.z << std::endl;
+//            std::cout << filmPoint.x << " " << filmPoint.y << " " << filmPoint.z << std::endl;
             Ray r{location, filmPoint - location};
 			auto hit = s.hit(r);
 			//PPM output
