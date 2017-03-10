@@ -32,7 +32,7 @@ std::unique_ptr<HitRecord> Shape::hit(Ray r)const
         Ray l{intersectPoint, lightDirection};
         //if the camera->shape ray also reaches the light source:
         //to create shadows
-        if(! ShapeList::getInstance().hit(l)){
+//        if(! ShapeList::getInstance().hit(l)){
     
     
         
@@ -55,9 +55,9 @@ std::unique_ptr<HitRecord> Shape::hit(Ray r)const
             i->g = green * baseColorValue;
             i->b = blue * baseColorValue;
         
-        } else {
-            std::cout << "secondary ray hit an object" << std::endl;
-        }
+//        } else {
+//            std::cout << "secondary ray hit an object" << std::endl;
+//        }
     }
 	return i;
 	
