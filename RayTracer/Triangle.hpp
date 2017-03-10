@@ -12,9 +12,10 @@
 #include <stdio.h>
 #include "Shape.hpp"
 
+
 class Triangle : public Shape{
 public:
-    Triangle(Vector a, Vector b, Vector c) :a(a), b(b), c(c){}
+    Triangle(Vector a, Vector b, Vector c, Color color) :a(a), b(b), c(c){}
     virtual ~Triangle();
     BBox getBoundingBox() const override;
 private:
@@ -26,6 +27,7 @@ private:
                                  const Vector    O,  //Ray origin
                                  const Vector    D  //Ray direction
     ) const;
+    Color color;
 };
 
 #endif /* Triangle_hpp */

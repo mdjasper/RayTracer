@@ -18,7 +18,7 @@ std::unique_ptr<T> make_unique(Args&&... args)
 }
 
 static int ValidColor(int c){
-    std::cout << c << std::endl;
+//    std::cout << c << std::endl;
 //    int color = c <= 0 ? 0 : c;
 //    color = color >= 255 ? 255 : color;
 //    return color;

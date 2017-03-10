@@ -1,4 +1,5 @@
 #include "Shape.hpp"
+#include "ShapeList.hpp"
 #include <iostream>
 //#include <cmath>
 
@@ -27,33 +28,37 @@ std::unique_ptr<HitRecord> Shape::hit(Ray r)const
         Point lightLocation {100, 300, 100}; //TODO get this from scene
         
 		Vector lightDirection = lightLocation - intersectPoint;
-        Vector normalizedLightDirection = normalize(lightDirection);
 		//create a new ray from the intersect point to the light
-        Ray l{intersectPoint, normalizedLightDirection};
+        Ray l{intersectPoint, lightDirection};
         //if the camera->shape ray also reaches the light source:
         //to create shadows
-        //if(hitP(l,Scene)){
-        //}
-		float red, green, blue; //TODO get matieral color info
-        red = 255;
-        green = 0;
-        blue = 0;
+        if(! ShapeList::getInstance().hit(l)){
     
-        float baseColorValue = dot(normalizedLightDirection, l.d + i->normal);
+    
         
-        if(baseColorValue > 1){
-            std::cout << baseColorValue << "\n";
+            float red, green, blue; //TODO get matieral color info
+            red = 255;
+            green = 0;
+            blue = 0;
+    
+            float baseColorValue = dot(normalize(r.d), normalize(l.d) + i->normal);
+        
+            if(baseColorValue > 1){
+                std::cout << baseColorValue << "\n";
+            }
+        
+//          std::cout << baseColorValue << "\n";
+        
+//          baseColorValue = dot(l, i->n);
+        
+            i->r = red * baseColorValue;
+            i->g = green * baseColorValue;
+            i->b = blue * baseColorValue;
+        
+        } else {
+            std::cout << "secondary ray hit an object" << std::endl;
         }
-        
-//        std::cout << baseColorValue << "\n";
-        
-//        baseColorValue = dot(l, i->n);
-        
-        i->r = red * baseColorValue;
-        i->g = green * baseColorValue;
-        i->b = blue * baseColorValue;
-        
-	}
+    }
 	return i;
 	
 }

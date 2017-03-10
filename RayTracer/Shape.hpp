@@ -3,6 +3,7 @@
 
 #include "BBox.hpp"
 #include "Geometry.hpp"
+#include "Constants.h"
 #include <memory>
 
 struct HitRecord{
@@ -21,6 +22,7 @@ public:
 private:
 	virtual bool intersectP(Ray) const;
 	virtual std::unique_ptr<HitRecord> intersect(Ray) const = 0;
+    Color color;
 };
 
 #endif

@@ -14,8 +14,7 @@ BBox ShapeList::getBoundingBox() const
 	return b;
 }
 
-std::unique_ptr<HitRecord> ShapeList::intersect(Ray r) const
-{
+std::unique_ptr<HitRecord> ShapeList::intersect(Ray r) const{
 	std::unique_ptr<HitRecord> hit = nullptr;
 	for (auto&& s : shapes)
 	{
