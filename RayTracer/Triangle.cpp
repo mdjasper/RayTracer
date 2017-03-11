@@ -73,7 +73,7 @@ std::unique_ptr<HitRecord> Triangle::intersect(Ray r) const{
 //    std::cout << t << "\n";
     
     if(t > EPSILON){
-        return make_unique<HitRecord>(t, Vector{1,1,1});
+        return make_unique<HitRecord>(t, Vector{1,1,1}, color);
     }
     
     return nullptr;

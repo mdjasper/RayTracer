@@ -7,10 +7,10 @@
 #include <memory>
 
 struct HitRecord{
-	HitRecord(float t, Vector normal) :t(t), normal(normal){}
+	HitRecord(float t, Vector normal, Color c) :t(t), normal(normal), c(c){}
 	float t;
 	Vector normal;
-	float r, g, b;
+	Color c;
 };
 
 class Shape{

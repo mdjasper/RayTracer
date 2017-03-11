@@ -15,9 +15,9 @@ struct Color {
     int r, g, b;
 };
 
-static const Color red   {1,   0,      0};
-static const Color green {0,     1,    0};
-static const Color blue  {0,     0,      1};
+static const Color red   {255,     0,      0};
+static const Color green {0,     255,      0};
+static const Color blue  {0,     0,      255};
 
 
 

@@ -22,7 +22,14 @@ BBox Sphere::getBoundingBox() const{
 };
 
 bool Sphere::intersectP(Ray r) const {
-    return true;
+    r.d = normalize(r.d);
+    Vector w = r.o - origin;
+    float A = dot(r.d, r.d);
+    float B = 2 * dot(w, r.d);
+    float C = dot(w,w) - (radius*radius);
+    float D = (B*B) - (4.0f * A * C);
+    
+    return D > 0.0f;
 }
 
 
@@ -51,6 +58,6 @@ std::unique_ptr<HitRecord> Sphere::intersect(Ray r) const
         //normal of the intersection
         Vector NHit = normalize(PHit - origin);
 //        std::cout << "Sphere D:" << D << "\t Sphere t: " << t << "\n";
-        return make_unique<HitRecord>(t, NHit);
+        return make_unique<HitRecord>(t, NHit, color);
     }
 }

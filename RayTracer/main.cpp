@@ -17,7 +17,7 @@ int main()
     int imageHeight = 500,
         imageWidth = 500;
     
-    Point cameraPosition = {0,-2,0};
+    Point cameraPosition = {0,-30,0};
     
     Vector cameraLook = {1,1,1}, //direction campera is pointing
     cameraUp = {0,-1,0}; //y-axis points up
@@ -35,8 +35,8 @@ int main()
 //    Sphere (point, radius, color);
 //    Triangle tri({100,100,100}, {105,100,110}, {100,105,110});
     
-    Sphere *ball = new Sphere({0,5,0}, 0.5, blue);
-    Sphere *ball2 = new Sphere({1,5,-1}, 3, red);
+    Sphere *ball = new Sphere({0,5,0}, 1, blue);
+    Sphere *ball2 = new Sphere({1,0,-1}, 3, red);
     
     ShapeList::getInstance().addShape(std::unique_ptr<Shape>(ground));
 //    scene.addShape(std::unique_ptr<Shape>(&tri));
@@ -59,13 +59,13 @@ int main()
     
     //Loop through image and set all pixels
     int i = 0;
-    for(int x=imageHeight; x>0; x--){
-        for(int y=imageWidth; y>0; y--){
+    for(int x = imageHeight; x > 0; x--){
+        for(int y = imageWidth; y > 0; y--){
             c.r = ValidColor(rgb[i]);
             c.g = ValidColor(rgb[i+1]);
             c.b = ValidColor(rgb[i+2]);
             c.a = 255;
-            img->setPixel(c,x,y);
+            img->setPixel(c, x, y);
             i += 3;
         }
     }

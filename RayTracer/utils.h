@@ -22,7 +22,7 @@ static int ValidColor(int c){
 //    int color = c <= 0 ? 0 : c;
 //    color = color >= 255 ? 255 : color;
 //    return color;
-    return c;
+    return c;// > 255 ? 255 : c;
 }
 
 #endif /* utils_h */

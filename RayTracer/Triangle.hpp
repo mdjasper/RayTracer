@@ -15,7 +15,7 @@
 
 class Triangle : public Shape{
 public:
-    Triangle(Vector a, Vector b, Vector c, Color color) :a(a), b(b), c(c){}
+    Triangle(Vector a, Vector b, Vector c, Color color) :a(a), b(b), color(color){}
     virtual ~Triangle();
     BBox getBoundingBox() const override;
 private:

@@ -26,15 +26,15 @@ void Camera::render(Shape const& s, std::vector<float>& rgb)
 			//find point on film
 			Point filmPoint = topLeft + perPixelV * static_cast<float>(i) + perPixelU * static_cast<float>(j);
 //            std::cout << filmPoint.x << " " << filmPoint.y << " " << filmPoint.z << std::endl;
-            Ray r{location, filmPoint - location};
+            Ray r = * new Ray{location, filmPoint - location};
 			auto hit = s.hit(r);
 			//PPM output
 			if (hit)
 			{
 //				std::cout << hit->r << ", " << hit->g << ", " << hit->b << ", ";
-                rgb.push_back(hit->r);
-                rgb.push_back(hit->g);
-                rgb.push_back(hit->b);
+                rgb.push_back(hit->c.r);
+                rgb.push_back(hit->c.g);
+                rgb.push_back(hit->c.b);
 			}
 			else
 			{

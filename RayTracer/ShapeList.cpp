@@ -1,11 +1,10 @@
 #include "ShapeList.hpp"
 
-void ShapeList::addShape(std::unique_ptr<Shape> s)
-{
+void ShapeList::addShape(std::unique_ptr<Shape> s){
     shapes.push_back(std::move(s));
 }
-BBox ShapeList::getBoundingBox() const
-{
+
+BBox ShapeList::getBoundingBox() const{
 	BBox b;
 	for (auto&& s : shapes)
 	{

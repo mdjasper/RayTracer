@@ -16,7 +16,7 @@ Extent union_(Extent a, Extent b)
 
 BBox union_(BBox a, BBox b)
 {
-	BBox result;
+    BBox result;// = *new BBox();
 	result.x = union_(a.x, b.x);
 	result.y = union_(a.y, b.y);
 	result.z = union_(a.z, b.z);
