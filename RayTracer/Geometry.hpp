@@ -16,7 +16,7 @@ static double length(Vector v){
     return sqrt(v.x*v.x + v.y*v.y + v.z*v.z);
 }
 
-static Vector normalize(Vector v){
+static inline Vector normalize(Vector v){
     float a = length(v);
     return {v.x/a, v.y/a, v.z/a};
 }
@@ -83,9 +83,12 @@ inline Point operator-(Point a, Vector b)
 	return{ a.x - b.x, a.y - b.y, a.z - b.z };
 }
 
+inline bool operator==(Point a, Point b){
+    return (a.x == b.x) && (a.y == b.y) && (a.z == b.z);
+}
+
 inline bool operator!=(Point a, Point b){
     return (a.x != b.x) && (a.y != b.y) && (a.z != b.z);
 }
-
 
 #endif
