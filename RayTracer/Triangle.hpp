@@ -20,13 +20,8 @@ public:
     BBox getBoundingBox() const override;
 private:
     std::unique_ptr<HitRecord> intersect(Ray) const override;
+    bool intersectP(Ray) const override;
     Vector a, b, c;
-    float triangle_intersection( const Vector   V1,  // Triangle vertices
-                                 const Vector   V2,
-                                 const Vector   V3,
-                                 const Vector    O,  //Ray origin
-                                 const Vector    D  //Ray direction
-    ) const;
     Color color;
 };
 

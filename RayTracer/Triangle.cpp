@@ -19,6 +19,10 @@ BBox Triangle::getBoundingBox() const{
     return box;
 }
 
+bool Triangle::intersectP(Ray r) const {
+    return true;
+}
+
 std::unique_ptr<HitRecord> Triangle::intersect(Ray r) const{
     
     
@@ -32,10 +36,12 @@ std::unique_ptr<HitRecord> Triangle::intersect(Ray r) const{
     Vector e2 = c-a;
 
     //if determinant is near zero, ray lies in plane of triangle or ray is parallel to plane of triangle
-    Vector p = cross(r.d, e2);
+    Vector triNormal = cross(r.d, e2);
+    
+    std::cout << triNormal << std::endl;
     
     //Begin calculating determinant - also used to calculate u parameter
-    float det = dot(e1, p);
+    float det = dot(e1, triNormal);
     
     //NOT CULLING
     if(det > -EPSILON && det < EPSILON){
@@ -48,12 +54,13 @@ std::unique_ptr<HitRecord> Triangle::intersect(Ray r) const{
     Vector T = O - a;
     
     //Calculate u parameter and test bound
-    float u = dot(T, p);
+    float u = dot(T, triNormal);
     
 //    std::cout << u << "\n";
     
     //The intersection lies outside of the triangle
     if(u < 0.f || u > 1.f){
+//        std::cout << "tri not hit" << std::endl;
         return nullptr;
     }
 
@@ -70,10 +77,11 @@ std::unique_ptr<HitRecord> Triangle::intersect(Ray r) const{
     }
     
     float t = dot(e2, Q) * inv_det;
-//    std::cout << t << "\n";
+    std::cout << t << "\n";
     
     if(t > EPSILON){
-        return make_unique<HitRecord>(t, Vector{1,1,1}, color);
+        std::cout << "Triangle Hit" << std::endl;
+        return make_unique<HitRecord>(t, normalize(triNormal), color);
     }
     
     return nullptr;

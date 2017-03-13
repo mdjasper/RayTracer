@@ -14,8 +14,8 @@
 int main()
 {
     
-    int imageHeight = 500,
-        imageWidth = 500;
+    int imageHeight = 100,
+        imageWidth = 100;
     
     Point cameraPosition = {0,-30,0};
     
@@ -31,18 +31,18 @@ int main()
     //Add shapes to the scene
     
 //    Plane (point, vector, color)
-    Plane *ground = new Plane({1, 1, 1}, {1, 0, 0}, green);
+//    Plane *ground = new Plane(Point{1, 1, 1}, Vector{0, 1, 0}, green);
 //    Sphere (point, radius, color);
-//    Triangle tri({100,100,100}, {105,100,110}, {100,105,110});
+    Triangle *tri = new Triangle({1,1,1}, {-4,1,1}, {1,-5,1}, green);
     
     Sphere *ball = new Sphere({0,5,0}, 1, blue);
     Sphere *ball2 = new Sphere({1,0,-1}, 3, red);
     
-    ShapeList::getInstance().addShape(std::unique_ptr<Shape>(ground));
-//    scene.addShape(std::unique_ptr<Shape>(&tri));
+//    ShapeList::getInstance().addShape(std::unique_ptr<Shape>(ground));
+    ShapeList::getInstance().addShape(std::unique_ptr<Shape>(tri));
     
-    ShapeList::getInstance().addShape(std::unique_ptr<Shape>(ball));
-    ShapeList::getInstance().addShape(std::unique_ptr<Shape>(ball2));
+//    ShapeList::getInstance().addShape(std::unique_ptr<Shape>(ball));
+//    ShapeList::getInstance().addShape(std::unique_ptr<Shape>(ball2));
     
 
     

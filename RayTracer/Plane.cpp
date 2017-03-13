@@ -11,8 +11,7 @@ std::unique_ptr<HitRecord> Plane::intersect(Ray r) const
 	if (val < .000001) return nullptr;
     float t = (-(dot(r.o, n) / dot(r.d, n)));
     
-    Vector HitLocationNormal = n;
-    return make_unique<HitRecord>(t, HitLocationNormal, c);
+    return make_unique<HitRecord>(t, n, c);
 }
 
 bool Plane::intersectP(Ray r) const {

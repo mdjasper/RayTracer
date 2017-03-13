@@ -2,6 +2,7 @@
 #define GEOMETRY_HPP
 
 #include <cmath>
+#include <iostream>
 
 struct Point
 {
@@ -89,6 +90,12 @@ inline bool operator==(Point a, Point b){
 
 inline bool operator!=(Point a, Point b){
     return (a.x != b.x) && (a.y != b.y) && (a.z != b.z);
+}
+
+inline std::ostream& operator<<(std::ostream &output, Vector v){
+
+    output << "x: " << v.x << " y: " << v.y << " z: " << v.z << std::endl;
+    return output;
 }
 
 #endif
