@@ -19,25 +19,20 @@ void Camera::render(Shape const& s, std::vector<float>& rgb)
 	std::cout << "P6" << std::endl;
 	std::cout << xPixels << " " << yPixels << std::endl;
 	std::cout << "256" << std::endl;
-	for (int i = 0; i < xPixels; ++i)
-	{
-		for (int j = 0; j < yPixels; ++j)
-		{
+	for (int i = 0; i < xPixels; ++i) {
+		for (int j = 0; j < yPixels; ++j) {
 			//find point on film
 			Point filmPoint = topLeft + perPixelV * static_cast<float>(i) + perPixelU * static_cast<float>(j);
 //            std::cout << filmPoint.x << " " << filmPoint.y << " " << filmPoint.z << std::endl;
             Ray r = * new Ray{location, filmPoint - location};
 			auto hit = s.hit(r);
 			//PPM output
-			if (hit)
-			{
+			if(hit) {
 //				std::cout << hit->r << ", " << hit->g << ", " << hit->b << ", ";
                 rgb.push_back(hit->c.r);
                 rgb.push_back(hit->c.g);
                 rgb.push_back(hit->c.b);
-			}
-			else
-			{
+			} else {
 //				std::cout << "0, 0, 0, ";
                 rgb.push_back(0);
                 rgb.push_back(0);

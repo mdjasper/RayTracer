@@ -38,7 +38,7 @@ std::unique_ptr<HitRecord> Triangle::intersect(Ray r) const{
     //if determinant is near zero, ray lies in plane of triangle or ray is parallel to plane of triangle
     Vector triNormal = cross(r.d, e2);
     
-    std::cout << triNormal << std::endl;
+//    std::cout << triNormal << std::endl;
     
     //Begin calculating determinant - also used to calculate u parameter
     float det = dot(e1, triNormal);
@@ -77,10 +77,10 @@ std::unique_ptr<HitRecord> Triangle::intersect(Ray r) const{
     }
     
     float t = dot(e2, Q) * inv_det;
-    std::cout << t << "\n";
+//    std::cout << t << "\n";
     
     if(t > EPSILON){
-        std::cout << "Triangle Hit" << std::endl;
+//        std::cout << "Triangle Hit" << std::endl;
         return make_unique<HitRecord>(t, normalize(triNormal), color);
     }
     

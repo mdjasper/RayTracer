@@ -93,8 +93,13 @@ inline bool operator!=(Point a, Point b){
 }
 
 inline std::ostream& operator<<(std::ostream &output, Vector v){
-
     output << "x: " << v.x << " y: " << v.y << " z: " << v.z << std::endl;
+    return output;
+}
+
+inline std::ostream& operator<<(std::ostream &output, Point p){
+    
+    output << "x: " << p.x << " y: " << p.y << " z: " << p.z << std::endl;
     return output;
 }
 
