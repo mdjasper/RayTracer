@@ -13,6 +13,7 @@ public:
     }
 	void addShape(std::unique_ptr<Shape>);
 	BBox getBoundingBox() const override;
+    bool intersectP(Ray) const override;
 private:
     ShapeList(){};
 	std::unique_ptr<HitRecord> intersect(Ray) const override;

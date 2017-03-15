@@ -3,9 +3,7 @@
 #include <iostream>
 //#include <cmath>
 
-bool Shape::intersectP(Ray r) const {
-	return(intersect(r)!=nullptr);
-}
+
 
 Shape::~Shape(){}
 
@@ -25,37 +23,37 @@ std::unique_ptr<HitRecord> Shape::hit(Ray r)const {
         
         
 		//create a new ray from the intersect point to the light
-        Point lightLocation = * new Point{0,100,10}; //TODO get this from scene
+        Point lightLocation = * new Point{50,100,50}; //TODO get this from scene
         Vector lightDirection = lightLocation - intersectPoint;
         Ray l = * new Ray{intersectPoint, lightDirection};
         
         //if the camera->shape ray also reaches the light source:
         //to create shadows
-//        std::cout << ((r.o.x == lightLocation.x) && (r.o.y == lightLocation.y))<< std::endl;
-        if(r.o != lightLocation){
-            auto lightHit = ShapeList::getInstance().hit(l);
-            if(!lightHit){
-                //no shapes in the way
-                //hit can see the light
-//                std::cout << "light ray hit the light" << std::endl;
-                float lightAngle = dot(normalize(lightDirection), normalize(i->normal));
-                
-                float reduction = lightAngle;
-                std::cout << lightAngle << std::endl;
-                
-                i->c.r *= reduction;
-                i->c.g *= reduction;
-                i->c.b *= reduction;
-                
-            } else {
-                //light is obstructed
-//                std::cout << "light ray hit an object" << std::endl;
-                i->c.r = 0;
-                i->c.g = 0;
-                i->c.b = 0;
+        auto lightHit = ShapeList::getInstance().hitP(l);
+//        std::cout << lightHit << std::endl;
+        if(!lightHit){
+            //no shapes in the way
+            //hit can see the light
+//            std::cout << "light ray hit the light" << std::endl;
+            float lightAngle = dot(normalize(lightDirection), normalize(i->normal));
+//        std::cout << lightAngle << std::endl;
+            if(lightAngle < 0){
+                lightAngle = 0;
             }
+        
+            float reduction = lightAngle;
+//                std::cout << lightAngle << std::endl;
+        
+            i->c.r *= reduction;
+            i->c.g *= reduction;
+            i->c.b *= reduction;
+                
         } else {
-//            std::cout << "2nd level ray" << std::endl;
+            //light is obstructed
+//            std::cout << "light ray hit an object" << std::endl;
+            i->c.r = 0;
+            i->c.g = 0;
+            i->c.b = 0;
         }
     }
 	return i;

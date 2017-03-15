@@ -35,3 +35,13 @@ std::unique_ptr<HitRecord> ShapeList::intersect(Ray r) const{
 	}
 	return hit;
 }
+
+bool ShapeList::intersectP(Ray r) const {
+    for (auto&& s : shapes)
+    {
+        if (s->hitP(r)){
+            return true;
+        }
+    }
+    return false;
+}

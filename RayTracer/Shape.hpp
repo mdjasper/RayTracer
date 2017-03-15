@@ -20,7 +20,7 @@ public:
 	bool hitP(Ray) const ;
 	std::unique_ptr<HitRecord> hit(Ray) const;
 private:
-	virtual bool intersectP(Ray) const;
+	virtual bool intersectP(Ray) const = 0;
 	virtual std::unique_ptr<HitRecord> intersect(Ray) const = 0;
     Color color;
 };

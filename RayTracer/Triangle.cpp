@@ -6,11 +6,13 @@
 //  Copyright © 2017 Michael Jasper. All rights reserved.
 //
 
+// https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-rendering-a-triangle/ray-triangle-intersection-geometric-solution
+
 #include "Triangle.hpp"
 #include "utils.h"
 #include <iostream>
 
-#define EPSILON 0.000001
+#define EPSILON 0.0001
 
 Triangle::~Triangle(){}
 
@@ -20,72 +22,112 @@ BBox Triangle::getBoundingBox() const{
 }
 
 bool Triangle::intersectP(Ray r) const {
-    return true;
+    
+    // compute plane's normal
+    Vector ab = b - a;
+    Vector ac = c - a;
+    // no need to normalize
+    Vector N = cross(ab, ac);//ab.crossProduct(ac); // N
+    //    N = normalize(N);
+    float area2 = length(N); // N.length();
+    
+    // Step 1: finding P
+    
+    // check if ray and plane are parallel ?
+    float NdotRayDirection = dot(N, r.d); //N.dotProduct(dir);
+    if (std::fabs(NdotRayDirection) < EPSILON) // almost 0
+        return false; // they are parallel so they don't intersect !
+    
+    // compute d parameter using equation 2
+    float d = dot(N, a); //N.dotProduct(a);
+    
+    // compute t (equation 3)
+    float t = dot(N, r.o) + d / NdotRayDirection; //(N.dotProduct(orig) + d) / NdotRayDirection;
+    // check if the triangle is in behind the ray
+    if (t < 0) return false; // the triangle is behind
+    
+    // compute the intersection point using equation 1
+    Point P = r.o + r.d * t;
+    
+    // Step 2: inside-outside test
+    Vector C; // vector perpendicular to triangle's plane
+    
+    // edge 0
+    Vector edge0 = b - a;
+    Vector vp0 = P - a;
+    C = cross(edge0, vp0); //edge0.crossProduct(vp0);
+    if (dot(N, C) < 0) return false; // P is on the right side
+    
+    // edge 1
+    Vector edge1 = c - b;
+    Vector vp1 = P - b;
+    C = cross(edge1, vp1); //edge1.crossProduct(vp1);
+    if (dot(N, C) < 0)  return false; // P is on the right side
+    
+    // edge 2
+    Vector edge2 = a - c;
+    Vector vp2 = P - c;
+    C = cross(edge2, vp2); //edge2.crossProduct(vp2);
+    if (dot(N, C) < 0) return false; // P is on the right side;
+    
+    std::cout << t << std::endl;
+    
+    return true; // this ray hits the triangle
 }
 
 std::unique_ptr<HitRecord> Triangle::intersect(Ray r) const{
     
     
-    //normalize ray direction vector, and convert ray origin to vector
-    r.d = normalize(r.d);
-    Vector O = {r.o.x, r.o.y, r.o.z};
+    // compute plane's normal
+    Vector ab = b - a;
+    Vector ac = c - a;
+    // no need to normalize
+    Vector N = cross(ab, ac);//ab.crossProduct(ac); // N
+//    N = normalize(N);
+    float area2 = length(N); // N.length();
     
+    // Step 1: finding P
     
-    //Find vectors for two edges sharing a
-    Vector e1 = b-a;
-    Vector e2 = c-a;
-
-    //if determinant is near zero, ray lies in plane of triangle or ray is parallel to plane of triangle
-    Vector triNormal = cross(r.d, e2);
+    // check if ray and plane are parallel ?
+    float NdotRayDirection = dot(N, r.d); //N.dotProduct(dir);
+    if (std::fabs(NdotRayDirection) < EPSILON) // almost 0
+        return nullptr; // they are parallel so they don't intersect !
     
-//    std::cout << triNormal << std::endl;
+    // compute d parameter using equation 2
+    float d = dot(N, a); //N.dotProduct(a);
     
-    //Begin calculating determinant - also used to calculate u parameter
-    float det = dot(e1, triNormal);
+    // compute t (equation 3)
+    float t = dot(N, r.o) + d / NdotRayDirection; //(N.dotProduct(orig) + d) / NdotRayDirection;
+    // check if the triangle is in behind the ray
+    if (t < 0) return nullptr; // the triangle is behind
     
-    //NOT CULLING
-    if(det > -EPSILON && det < EPSILON){
-        return nullptr;
-    }
+    // compute the intersection point using equation 1
+    Point P = r.o + r.d * t;
     
-    float inv_det = 1.f/det;
+    // Step 2: inside-outside test
+    Vector C; // vector perpendicular to triangle's plane
     
-    //calculate distance from a to ray origin
-    Vector T = O - a;
+    // edge 0
+    Vector edge0 = b - a;
+    Vector vp0 = P - a;
+    C = cross(edge0, vp0); //edge0.crossProduct(vp0);
+    if (dot(N, C) < 0) return nullptr; // P is on the right side
     
-    //Calculate u parameter and test bound
-    float u = dot(T, triNormal);
+    // edge 1
+    Vector edge1 = c - b;
+    Vector vp1 = P - b;
+    C = cross(edge1, vp1); //edge1.crossProduct(vp1);
+    if (dot(N, C) < 0)  return nullptr; // P is on the right side
     
-//    std::cout << u << "\n";
+    // edge 2
+    Vector edge2 = a - c;
+    Vector vp2 = P - c;
+    C = cross(edge2, vp2); //edge2.crossProduct(vp2);
+    if (dot(N, C) < 0) return nullptr; // P is on the right side;
     
-    //The intersection lies outside of the triangle
-    if(u < 0.f || u > 1.f){
-//        std::cout << "tri not hit" << std::endl;
-        return nullptr;
-    }
-
-    //Prepare to test v parameter
-    Vector Q = cross(T, e1);
+//    std::cout << t << std::endl;
     
-    //Calculate V parameter and test bound
-    float v = dot(r.d, Q) * inv_det;
-    
-//    std::cout << v << "\n";
-    
-    if(v < 0.f || u + v  > 1.f) {
-        return nullptr;
-    }
-    
-    float t = dot(e2, Q) * inv_det;
-//    std::cout << t << "\n";
-    
-    if(t > EPSILON){
-//        std::cout << "Triangle Hit" << std::endl;
-        return make_unique<HitRecord>(t, normalize(triNormal), color);
-    }
-    
-    return nullptr;
-     
+    return make_unique<HitRecord>(t, N, color); // this ray hits the triangle
     
     
 }

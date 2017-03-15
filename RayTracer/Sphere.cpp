@@ -29,7 +29,14 @@ bool Sphere::intersectP(Ray r) const {
     float C = dot(w,w) - (radius*radius);
     float D = (B*B) - (4.0f * A * C);
     
-    return D > 0.0f;
+    if(D < 0.0001f){
+        return false;
+    }
+    
+    float t = (-B + sqrt(D))/(2.0f*A);
+    
+    return t > 0;
+    
 }
 
 

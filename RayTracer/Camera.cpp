@@ -12,9 +12,9 @@ void Camera::render(Shape const& s, std::vector<float>& rgb)
     
 	auto filmCenter = location + lookAt;
 	auto v = cross(lookAt, up);
-	auto perPixelU = up / (height / yPixels);
-	auto perPixelV = v / (width / xPixels);
-	auto topLeft = filmCenter - (perPixelV * (xPixels / 2.0f)) + (perPixelU * (yPixels/2.0f));
+	auto perPixelU = up * (height / yPixels);
+	auto perPixelV = v * (width / xPixels);
+	auto topLeft = filmCenter - (perPixelV * (xPixels / 2.0f)) - (perPixelU * (yPixels/2.0f));
 	//For each pixel cast ray
 	std::cout << "P6" << std::endl;
 	std::cout << xPixels << " " << yPixels << std::endl;
@@ -42,3 +42,4 @@ void Camera::render(Shape const& s, std::vector<float>& rgb)
 //		std::cout << std::endl;
 	}
 }
+

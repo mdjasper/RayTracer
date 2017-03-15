@@ -15,13 +15,13 @@
 
 class Triangle : public Shape{
 public:
-    Triangle(Vector a, Vector b, Vector c, Color color) :a(a), b(b), color(color){}
+    Triangle(Point a, Point b, Point c, Color color) :a(a), b(b), c(c), color(color){}
     virtual ~Triangle();
     BBox getBoundingBox() const override;
 private:
     std::unique_ptr<HitRecord> intersect(Ray) const override;
     bool intersectP(Ray) const override;
-    Vector a, b, c;
+    Point a, b, c;
     Color color;
 };
 
