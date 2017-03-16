@@ -17,6 +17,9 @@ bool SphereTest(){
     Sphere *ball = new Sphere({0,0,0}, 9, blue);
     Ray r = Ray{Point{0,0,0}, Vector{1,1,1}};
     auto hit = ball->hit(r);
+    
+    auto box = ball->getBoundingBox();
+    
     return true;
 }
 

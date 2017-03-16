@@ -17,7 +17,24 @@ Sphere::~Sphere(){
 }
 
 BBox Sphere::getBoundingBox() const{
+    
+    Extent x,y,z;
+    
+    x.min = origin.x - radius;
+    x.max = origin.x + radius;
+    
+    y.min = origin.y - radius;
+    y.max = origin.y + radius;
+    
+    z.min = origin.z - radius;
+    z.max = origin.z + radius;
+    
     BBox box;
+    
+    box.x = x;
+    box.y = y;
+    box.z = z;
+    
     return box;
 };
 
