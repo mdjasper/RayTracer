@@ -17,7 +17,32 @@
 Triangle::~Triangle(){}
 
 BBox Triangle::getBoundingBox() const{
+    
+    Extent x,y,z;
+    
+    x.max = x.max > b.x ? x.max : b.x;
+    x.max = x.max > c.x ? x.max : c.x;
+    
+    y.max = y.max > b.y ? y.max : b.y;
+    y.max = y.max > c.y ? y.max : c.y;
+    
+    z.max = z.max > b.z ? z.max : b.z;
+    z.max = z.max > c.z ? z.max : c.z;
+    
+    x.min = x.min < b.x ? x.min : b.x;
+    x.min = x.min < c.x ? x.min : c.x;
+    
+    y.min = y.min < b.y ? y.min : b.y;
+    y.min = y.min < c.y ? y.min : c.y;
+    
+    z.min = z.min < b.z ? z.min : b.z;
+    z.min = z.min < c.z ? z.min : c.z;
+    
     BBox box;
+    
+    box.x = x;
+    box.y = y;
+    box.z = z;
     return box;
 }
 

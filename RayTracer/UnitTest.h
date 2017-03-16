@@ -26,6 +26,8 @@ bool TriangleTest(){
     Ray r = Ray{Point{0,0,0}, Vector{0,0,1}};
     auto hit = tri->hit(r);
     
+    auto box = tri->getBoundingBox();
+    
     return true;
 }
 

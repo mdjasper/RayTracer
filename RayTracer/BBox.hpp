@@ -7,7 +7,7 @@
 
 struct Extent
 {
-	Extent() :min(std::numeric_limits<float>::max()), max(std::numeric_limits<float>::min()){}
+    Extent() :min(std::numeric_limits<float>::max()), max(std::numeric_limits<float>::min()){}
 	float min, max;
 };
 
