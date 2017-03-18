@@ -39,122 +39,69 @@ BBox Triangle::getBoundingBox() const{
     z.min = z.min < c.z ? z.min : c.z;
     
     BBox box;
-    
     box.x = x;
     box.y = y;
     box.z = z;
+    
     return box;
 }
 
 bool Triangle::intersectP(Ray r) const {
+    /*
+     Möller-Trumbore algorithm
+     https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-rendering-a-triangle/moller-trumbore-ray-triangle-intersection
+     */
     
-    // compute plane's normal
-    Vector ab = b - a;
-    Vector ac = c - a;
-    // no need to normalize
-    Vector N = cross(ab, ac);//ab.crossProduct(ac); // N
-    //    N = normalize(N);
-    float area2 = length(N); // N.length();
+    Vector v0v1 = c - a;
+    Vector v0v2 = b - a;
+    Vector pvec = cross(r.d, v0v2); //dir.crossProduct(v0v2);
+    float det = dot(v0v1, pvec); //v0v1.dotProduct(pvec);
     
-    // Step 1: finding P
+    if (fabs(det) < EPSILON) return false;
     
-    // check if ray and plane are parallel ?
-    float NdotRayDirection = dot(N, r.d); //N.dotProduct(dir);
-    if (std::fabs(NdotRayDirection) < EPSILON) // almost 0
-        return false; // they are parallel so they don't intersect !
+    float invDet = 1 / det;
     
-    // compute d parameter using equation 2
-    float d = dot(N, a); //N.dotProduct(a);
+    Vector tvec = r.o - a;
+    float u = dot(tvec, pvec) * invDet; //tvec.dotProduct(pvec) * invDet;
+    if (u < 0 || u > 1) return false;
     
-    // compute t (equation 3)
-    float t = dot(N, r.o) + d / NdotRayDirection; //(N.dotProduct(orig) + d) / NdotRayDirection;
-    // check if the triangle is in behind the ray
-    if (t < 0) return false; // the triangle is behind
+    Vector qvec = cross(tvec, v0v1); //tvec.crossProduct(v0v1);
+    float v = dot(r.d, qvec); //dir.dotProduct(qvec) * invDet;
+    if (v < 0 || u + v > 1) return false;
     
-    // compute the intersection point using equation 1
-    Point P = r.o + r.d * t;
-    
-    // Step 2: inside-outside test
-    Vector C; // vector perpendicular to triangle's plane
-    
-    // edge 0
-    Vector edge0 = b - a;
-    Vector vp0 = P - a;
-    C = cross(edge0, vp0); //edge0.crossProduct(vp0);
-    if (dot(N, C) < 0) return false; // P is on the right side
-    
-    // edge 1
-    Vector edge1 = c - b;
-    Vector vp1 = P - b;
-    C = cross(edge1, vp1); //edge1.crossProduct(vp1);
-    if (dot(N, C) < 0)  return false; // P is on the right side
-    
-    // edge 2
-    Vector edge2 = a - c;
-    Vector vp2 = P - c;
-    C = cross(edge2, vp2); //edge2.crossProduct(vp2);
-    if (dot(N, C) < 0) return false; // P is on the right side;
-    
-    std::cout << t << std::endl;
+    float t = dot(v0v2, qvec) * invDet; //v0v2.dotProduct(qvec) * invDet;
     
     return true; // this ray hits the triangle
 }
 
 std::unique_ptr<HitRecord> Triangle::intersect(Ray r) const{
+    /*
+     Möller-Trumbore algorithm
+     https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-rendering-a-triangle/moller-trumbore-ray-triangle-intersection
+     */
     
+    Vector v0v1 = c - a;
+    Vector v0v2 = b - a;
+    Vector pvec = cross(r.d, v0v2); //dir.crossProduct(v0v2);
+    float det = dot(v0v1, pvec); //v0v1.dotProduct(pvec);
+
+    if (fabs(det) < EPSILON) return nullptr;
+
+    float invDet = 1 / det;
     
-    // compute plane's normal
-    Vector ab = b - a;
-    Vector ac = c - a;
-    // no need to normalize
-    Vector N = cross(ab, ac);//ab.crossProduct(ac); // N
-//    N = normalize(N);
-    float area2 = length(N); // N.length();
+    Vector tvec = r.o - a;
+    float u = dot(tvec, pvec) * invDet; //tvec.dotProduct(pvec) * invDet;
+    if (u < 0 || u > 1) return nullptr;
     
-    // Step 1: finding P
+    Vector qvec = cross(tvec, v0v1); //tvec.crossProduct(v0v1);
+    float v = dot(r.d, qvec); //dir.dotProduct(qvec) * invDet;
+    if (v < 0 || u + v > 1) return nullptr;
     
-    // check if ray and plane are parallel ?
-    float NdotRayDirection = dot(N, r.d); //N.dotProduct(dir);
-    if (std::fabs(NdotRayDirection) < EPSILON) // almost 0
-        return nullptr; // they are parallel so they don't intersect !
+    float t = dot(v0v2, qvec) * invDet; //v0v2.dotProduct(qvec) * invDet;
     
-    // compute d parameter using equation 2
-    float d = dot(N, a); //N.dotProduct(a);
+    Vector normal = cross(v0v1, v0v2);
     
-    // compute t (equation 3)
-    float t = dot(N, r.o) + d / NdotRayDirection; //(N.dotProduct(orig) + d) / NdotRayDirection;
-    // check if the triangle is in behind the ray
-    if (t < 0) return nullptr; // the triangle is behind
-    
-    // compute the intersection point using equation 1
-    Point P = r.o + r.d * t;
-    
-    // Step 2: inside-outside test
-    Vector C; // vector perpendicular to triangle's plane
-    
-    // edge 0
-    Vector edge0 = b - a;
-    Vector vp0 = P - a;
-    C = cross(edge0, vp0); //edge0.crossProduct(vp0);
-    if (dot(N, C) < 0) return nullptr; // P is on the right side
-    
-    // edge 1
-    Vector edge1 = c - b;
-    Vector vp1 = P - b;
-    C = cross(edge1, vp1); //edge1.crossProduct(vp1);
-    if (dot(N, C) < 0)  return nullptr; // P is on the right side
-    
-    // edge 2
-    Vector edge2 = a - c;
-    Vector vp2 = P - c;
-    C = cross(edge2, vp2); //edge2.crossProduct(vp2);
-    if (dot(N, C) < 0) return nullptr; // P is on the right side;
-    
-//    std::cout << t << std::endl;
-    
-    return make_unique<HitRecord>(t, N, color); // this ray hits the triangle
-    
-    
+    return make_unique<HitRecord>(t, normal, color); // this ray hits the triangle
 }
 
 
