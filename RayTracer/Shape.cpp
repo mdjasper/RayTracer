@@ -23,7 +23,7 @@ std::unique_ptr<HitRecord> Shape::hit(Ray r)const {
 //        std::cout << intersectPoint << std::endl;
         
 		//create a new ray from the intersect point to the light
-        Point lightLocation = * new Point{0,100,100}; //TODO get this from scene
+        Point lightLocation = * new Point{100,100,100}; //TODO get this from scene
         Vector lightDirection = lightLocation - intersectPoint;
         Ray l = * new Ray{intersectPoint, lightDirection};
         

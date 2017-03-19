@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cmath>
 #include <chrono>
+#include <cstdlib>
 
 //3rd party
 
@@ -12,6 +13,7 @@
 //Ray Tracer Classes
 
 #include "ShapeList.hpp"
+#include "BVH.h"
 #include "Camera.hpp"
 #include "Plane.hpp"
 #include "Sphere.h"
@@ -27,19 +29,49 @@ using namespace tinyply;
 
 int main()
 {
+    
+//    BvhTest();
+    
+    
     //Time the performance
     auto start = chrono::steady_clock::now();
     
     int imageHeight = 100,
     imageWidth = 100;
     
-    Point cameraPosition = {0,1,-10};
+    Point cameraPosition = {0,0,-1};
     
     Vector cameraLook = {0,0,1},
     cameraUp = {0,1,0};
     
     Camera camera(1, 1, imageHeight, imageWidth, cameraPosition, cameraUp);
     camera.look(cameraLook);
+    
+    //Create some random shapes
+    srand (static_cast <unsigned> (time(0)));
+    /*
+    Sphere *s;
+    int LO = -20;
+    int HI = 20;
+    Color cols[4] = {red,green,blue,yellow};
+    BVH *tree = new BVH();
+    
+    for(int i = 0; i<10; i++){
+        float x = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+        float y = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+        float z = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+        float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX)*2;
+        s = new Sphere({x,y,z},r, green);
+        
+        tree->addShape(std::unique_ptr<Shape>(s));
+    }
+    
+    s = new Sphere({0,0,0}, 5, red);
+    tree->addShape(std::unique_ptr<Shape>(s));
+    tree->balance();
+    ShapeList::getInstance().addShape(std::unique_ptr<Shape>(tree));
+    
+    */
     
     
     try{
@@ -102,26 +134,8 @@ int main()
         std::cout << "\tRead " << faces.size() << " total faces (triangles) (" << faceCount << " properties)." << std::endl;
 //        std::cout << "\tRead " << uvCoords.size() << " total texcoords (" << faceTexcoordCount << " properties)." << std::endl;
         
-//        Sphere *ball = new Sphere({0,0,0}, 1, red);
-//        ShapeList::getInstance().addShape(std::unique_ptr<Shape>(ball));
-        
-//        Point top{0,1,0.5};
-//        Point a{0,0,1};
-//        Point b{1,0,1};
-//        Point c{-1,0,-1};
-        
-//        Triangle *t1 = new Triangle(a, b, top, red);
-//        Triangle *t2 = new Triangle(a, top, c, green);
-//        Triangle *t3 = new Triangle({0,0,0}, {0,-1,-1}, {-1,-1,-1}, yellow);
-        
-//        Triangle *ground = new Triangle({0,-1,0}, {-1000,-1,1000}, {1000,-1,1000}, blue);
-//        ShapeList::getInstance().addShape(std::unique_ptr<Shape>(ground));
-        
-//
-//        ShapeList::getInstance().addShape(std::unique_ptr<Shape>(t1));
-//        ShapeList::getInstance().addShape(std::unique_ptr<Shape>(t2));
-//        ShapeList::getInstance().addShape(std::unique_ptr<Shape>(t3));
-        
+
+        BVH *tree = new BVH();
         
         Triangle *t;
         float s = 5;
@@ -139,9 +153,12 @@ int main()
             
             t = new Triangle(a,b,c, green);
             
-            ShapeList::getInstance().addShape(std::unique_ptr<Shape>(t));
+            tree->addShape(std::unique_ptr<Shape>(t));
         }
         
+        tree->balance();
+        
+        ShapeList::getInstance().addShape(std::unique_ptr<Shape>(tree));
         
         
     
@@ -151,6 +168,8 @@ int main()
     {
         std::cerr << "Caught exception: " << e.what() << std::endl;
     }
+     
+    
     
 
 	//Render Scene
