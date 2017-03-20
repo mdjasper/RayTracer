@@ -91,7 +91,7 @@ struct Node{
         center /= list.size();
         
         //Divide shapes into left or right IF list.size > 4
-        if(list.size() >800){
+        if(list.size() > 2000){
             left = new Node();
             right = new Node();
         

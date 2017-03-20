@@ -23,7 +23,7 @@ std::unique_ptr<HitRecord> Shape::hit(Ray r)const {
 //        std::cout << intersectPoint << std::endl;
         
 		//create a new ray from the intersect point to the light
-        Point lightLocation = * new Point{100,100,100}; //TODO get this from scene
+        Point lightLocation = * new Point{0, 100, 0}; //TODO get this from scene
         Vector lightDirection = lightLocation - intersectPoint;
         Ray l = * new Ray{intersectPoint, lightDirection};
         
@@ -50,9 +50,9 @@ std::unique_ptr<HitRecord> Shape::hit(Ray r)const {
         } else {
             //light is obstructed
 //            std::cout << "light ray hit an object" << std::endl;
-            i->c.r = 0;
+            i->c.r = 255;
             i->c.g = 0;
-            i->c.b = 0;
+            i->c.b = 255;
         }
     }
 	return i;

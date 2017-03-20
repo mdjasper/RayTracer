@@ -39,6 +39,6 @@ void Camera::render(Shape const& s, std::vector<float>& rgb)
 			}
 		}
 	}
-    std::cout << std::endl;
+//    std::cout << std::endl;
 }
 

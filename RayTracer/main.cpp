@@ -36,42 +36,16 @@ int main()
     //Time the performance
     auto start = chrono::steady_clock::now();
     
-    int imageHeight = 100,
-    imageWidth = 100;
+    int imageHeight = 500,
+    imageWidth = 500;
     
-    Point cameraPosition = {0,0,-1};
+    Point cameraPosition = {0,0.1,-0.3};
     
     Vector cameraLook = {0,0,1},
     cameraUp = {0,1,0};
     
     Camera camera(1, 1, imageHeight, imageWidth, cameraPosition, cameraUp);
     camera.look(cameraLook);
-    
-    //Create some random shapes
-    srand (static_cast <unsigned> (time(0)));
-    /*
-    Sphere *s;
-    int LO = -20;
-    int HI = 20;
-    Color cols[4] = {red,green,blue,yellow};
-    BVH *tree = new BVH();
-    
-    for(int i = 0; i<10; i++){
-        float x = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
-        float y = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
-        float z = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
-        float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX)*2;
-        s = new Sphere({x,y,z},r, green);
-        
-        tree->addShape(std::unique_ptr<Shape>(s));
-    }
-    
-    s = new Sphere({0,0,0}, 5, red);
-    tree->addShape(std::unique_ptr<Shape>(s));
-    tree->balance();
-    ShapeList::getInstance().addShape(std::unique_ptr<Shape>(tree));
-    
-    */
     
     
     try{
@@ -126,34 +100,31 @@ int main()
         file.read(ss);
         
         
-        // Good place to put a breakpoint!
-        
         std::cout << "\tRead " << verts.size() << " total vertices (" << vertexCount << " properties)." << std::endl;
-//        std::cout << "\tRead " << norms.size() << " total normals (" << normalCount << " properties)." << std::endl;
-//        std::cout << "\tRead " << colors.size() << " total vertex colors (" << colorCount << " properties)." << std::endl;
         std::cout << "\tRead " << faces.size() << " total faces (triangles) (" << faceCount << " properties)." << std::endl;
-//        std::cout << "\tRead " << uvCoords.size() << " total texcoords (" << faceTexcoordCount << " properties)." << std::endl;
+
         
 
         BVH *tree = new BVH();
         
+        //Create Points from Vertices
+        vector<Point> points;
+        float scale = 1;
+        for(int i = 0; i < verts.size(); i += 3){
+            points.push_back({verts[i]*scale, verts[i+1]*scale, verts[i+2]*scale});
+        }
+        
         Triangle *t;
-        float s = 5;
         for(int i = 0; i < faces.size(); i += 3){
-            
-            Point a{ verts[faces[i + 0] + 0]*s, verts[faces[i + 0] + 1]*s, verts[faces[i + 0] + 2]*s };
-            Point b{ verts[faces[i + 1] + 0]*s, verts[faces[i + 1] + 1]*s, verts[faces[i + 1] + 2]*s };
-            Point c{ verts[faces[i + 2] + 0]*s, verts[faces[i + 2] + 1]*s, verts[faces[i + 2] + 2]*s };
-            
-            std::cout << a;
-            std::cout << b;
-            std::cout << c;
-            
-            std::cout << std::endl;
-            
-            t = new Triangle(a,b,c, green);
+            t = new Triangle(
+                             points[ faces[i] ],
+                             points[ faces[i+1] ],
+                             points[ faces[i+2] ],
+                             green
+                    );
             
             tree->addShape(std::unique_ptr<Shape>(t));
+//            ShapeList::getInstance().addShape(std::unique_ptr<Shape>(t));
         }
         
         tree->balance();
