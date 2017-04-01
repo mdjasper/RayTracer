@@ -20,29 +20,32 @@ std::unique_ptr<HitRecord> Shape::hit(Ray r)const {
 		//check lighting
 		auto intersectPoint = r.o + r.d * i->t;
 		//For each light
-//        std::cout << intersectPoint << std::endl;
         
 		//create a new ray from the intersect point to the light
-        Point lightLocation = * new Point{0, 100, 0}; //TODO get this from scene
+        Point lightLocation{0, 100, 0}; //TODO get this from scene
         Vector lightDirection = lightLocation - intersectPoint;
+        //Point LightTestPoint = intersectPoint + normalize(lightDirection) * 0.0001;
         Ray l = * new Ray{intersectPoint, lightDirection};
         
         //if the camera->shape ray also reaches the light source:
         //to create shadows
         auto lightHit = ShapeList::getInstance().hitP(l);
-//        std::cout << lightHit << std::endl;
+        float ambient = 0.5;
+        
         if(!lightHit){
             //no shapes in the way
             //hit can see the light
-//            std::cout << "light ray hit the light" << std::endl;
             float lightAngle = dot(normalize(lightDirection), normalize(i->normal));
-//        std::cout << lightAngle << std::endl;
+  //      std::cout << lightAngle << std::endl;
+            
             if(lightAngle < 0){
                 lightAngle = 0;
             }
+            
+            
         
-            float reduction = lightAngle;// 1 - (lightAngle * 0.8);
-//                std::cout << lightAngle << std::endl;
+            float reduction =lightAngle * (1-ambient) + ambient;
+            //std::cout << reduction << std::endl;
         
             i->c.r *= reduction;
             i->c.g *= reduction;
@@ -50,9 +53,9 @@ std::unique_ptr<HitRecord> Shape::hit(Ray r)const {
         } else {
             //light is obstructed
 //            std::cout << "light ray hit an object" << std::endl;
-            i->c.r = 255;
-            i->c.g = 0;
-            i->c.b = 255;
+            i->c.r *= ambient;
+            i->c.g *= ambient;
+            i->c.b *= ambient;
         }
     }
 	return i;

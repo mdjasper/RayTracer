@@ -16,15 +16,20 @@ static const bool debug = true;
 //colors
 
 struct Color {
-    int r, g, b;
+    float r, g, b;
 };
 
-static const Color red   {255,    0,      0   };
-static const Color green {0,      255,    0   };
-static const Color blue  {0,      0,      255 };
-static const Color yellow{255,    255,    0   };
+static const Color red   {1.0, 0.0, 0.0};
+static const Color green {0.0, 1.0, 0.0};
+static const Color blue  {0.0, 0.0, 1.0};
+static const Color yellow{1.0, 1.0, 0.0};
+static const Color white {1.0, 1.0, 1.0};
 
-
+inline std::ostream& operator<<(std::ostream &output, Color c){
+    
+    output << "r: " << c.r << " g: " << c.g << " b: " << c.b << std::endl;
+    return output;
+}
 
 
 #endif /* Constants_h */

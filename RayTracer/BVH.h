@@ -15,10 +15,12 @@
 
 
 struct Node{
-    Node(): left(), right(), box(), isLeaf(false) {};
+    Node(int max, int current): left(), right(), box(), isLeaf(false), currentDepth(current), maxDepth(max) {};
     Node *left;
     Node *right;
     BBox box{};
+    int currentDepth;
+    int maxDepth;
     bool isLeaf;
     std::vector<std::unique_ptr<Shape>> list;
     std::unique_ptr<HitRecord> hit(Ray r){
@@ -82,7 +84,7 @@ struct Node{
     void balance(){
         //Get center X for all shapes in this node
         //And union BBoxs of all shapes in this node
-        float center;
+        float center = 0.0;
         for(auto &s : list){
             auto sbox = s->getBoundingBox();
             center += (sbox.x.min + sbox.x.max) / 2;
@@ -90,14 +92,13 @@ struct Node{
         }
         center /= list.size();
         
-        //Divide shapes into left or right IF list.size > 4
-        if(list.size() > 2000){
-            left = new Node();
-            right = new Node();
+        if(maxDepth < currentDepth && list.size() > 1){
+            left = new Node(maxDepth, currentDepth + 1);
+            right = new Node(maxDepth, currentDepth + 1);
         
             for(auto &s : list){
                 auto sbox = s->getBoundingBox();
-                float sCenter = (sbox.x.min + sbox.x.max) / 2;
+                //float sCenter = (sbox.x.min + sbox.x.max) / 2;
                 if(sbox.x.min < center){
                     right->list.push_back(std::move(s));
                 } else {
@@ -115,8 +116,8 @@ struct Node{
 
 class BVH : public Shape{
 public:
-    BVH(){
-        root = new Node{};
+    BVH(int depth){
+        root = new Node{depth,0}; //maxdepth = 4, currentdepth = 0
     };
     virtual ~BVH(){}
     BBox getBoundingBox() const override{

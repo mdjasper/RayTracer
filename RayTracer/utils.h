@@ -18,11 +18,12 @@ std::unique_ptr<T> make_unique(Args&&... args)
 }
 
 static inline int ValidColor(int c){
-//    std::cout << c << std::endl;
-//    int color = c <= 0 ? 0 : c;
-//    color = color >= 255 ? 255 : color;
-//    return color;
-    return c;// > 255 ? 255 : c;
+    if(c > 255){
+        return 255;
+    } else if(c < 0) {
+        return 0;
+    }
+    return c;
 }
 
 #endif /* utils_h */

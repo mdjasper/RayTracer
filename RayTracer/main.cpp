@@ -15,7 +15,7 @@
 #include "ShapeList.hpp"
 #include "BVH.h"
 #include "Camera.hpp"
-#include "Plane.hpp"
+//#include "Plane.hpp"
 #include "Sphere.h"
 #include "Triangle.hpp"
 #include "utils.h"
@@ -27,21 +27,19 @@
 
 using namespace tinyply;
 
-int main()
-{
+int main(){
     
-//    BvhTest();
-    
+    TriangleTest();
     
     //Time the performance
     auto start = chrono::steady_clock::now();
     
-    int imageHeight = 500,
-    imageWidth = 500;
+    int imageHeight = 100,
+    imageWidth = 100;
     
-    Point cameraPosition = {0,0.1,-0.3};
+    Point cameraPosition = {0,1,15};
     
-    Vector cameraLook = {0,0,1},
+    Vector cameraLook = {0,0,-1},
     cameraUp = {0,1,0};
     
     Camera camera(1, 1, imageHeight, imageWidth, cameraPosition, cameraUp);
@@ -49,7 +47,7 @@ int main()
     
     
     try{
-        std::ifstream ss("/Users/mdjasper/Sites/sandbox/graphics2/RayTracer/RayTracer/bun_zipper_res4.ply", std::ios::binary);
+        std::ifstream ss("/Users/mdjasper/Sites/sandbox/graphics2/RayTracer/RayTracer/tennis_shoe.ply", std::ios::binary);
         
         PlyFile file(ss);
         
@@ -72,8 +70,8 @@ int main()
         // the property type given in the header. Tinyply will interally allocate the
         // the appropriate amount of memory.
         std::vector<float> verts;
-        std::vector<float> norms;
-        std::vector<uint8_t> colors;
+//        std::vector<float> norms;
+//        std::vector<uint8_t> colors;
         
         std::vector<int> faces;
         std::vector<float> uvCoords;
@@ -85,8 +83,8 @@ int main()
         // above will be resized into a multiple of the property group size as
         // they are "flattened"... i.e. verts = {x, y, z, x, y, z, ...}
         vertexCount = file.request_properties_from_element("vertex", { "x", "y", "z" }, verts);
-        normalCount = file.request_properties_from_element("vertex", { "nx", "ny", "nz" }, norms);
-        colorCount = file.request_properties_from_element("vertex", { "red", "green", "blue", "alpha" }, colors);
+//        normalCount = file.request_properties_from_element("vertex", { "nx", "ny", "nz" }, norms);
+//        colorCount = file.request_properties_from_element("vertex", { "red", "green", "blue", "alpha" }, colors);
         
         // For properties that are list types, it is possibly to specify the expected count (ideal if a
         // consumer of this library knows the layout of their format a-priori). Otherwise, tinyply
@@ -105,17 +103,19 @@ int main()
 
         
 
-        BVH *tree = new BVH();
+        BVH *tree = new BVH(100);
         
         //Create Points from Vertices
         vector<Point> points;
         float scale = 1;
         for(int i = 0; i < verts.size(); i += 3){
-            points.push_back({verts[i]*scale, verts[i+1]*scale, verts[i+2]*scale});
+            points.push_back({verts[i] * scale, verts[i+1] * scale, verts[i+2] * scale});
         }
         
         Triangle *t;
+        Triangle *tp;
         for(int i = 0; i < faces.size(); i += 3){
+            //std::cout << points[faces[i]] << points[faces[i+1]] << points[faces[i+2]] << std::endl;
             t = new Triangle(
                              points[ faces[i] ],
                              points[ faces[i+1] ],
@@ -123,28 +123,38 @@ int main()
                              green
                     );
             
+            tp = new Triangle(
+                             points[ faces[i+2] ],
+                             points[ faces[i] ],
+                             points[ faces[i+1] ],
+                             green
+                             );
+            
             tree->addShape(std::unique_ptr<Shape>(t));
-//            ShapeList::getInstance().addShape(std::unique_ptr<Shape>(t));
+            tree->addShape(std::unique_ptr<Shape>(tp));
         }
         
         tree->balance();
         
         ShapeList::getInstance().addShape(std::unique_ptr<Shape>(tree));
         
-        
-    
-    }
-    
-    catch (const std::exception & e)
-    {
+    } catch (const std::exception & e) {
         std::cerr << "Caught exception: " << e.what() << std::endl;
     }
-     
     
+    
+    
+    Sphere * redBall = new Sphere({1,5,-4}, 3, red);
+    ShapeList::getInstance().addShape(std::unique_ptr<Shape>(redBall));
+    
+//    Sphere * blueBall = new Sphere({3,3,0}, 2, blue);
+//    ShapeList::getInstance().addShape(std::unique_ptr<Shape>(blueBall));
+    
+    std::cout << "Tree balanced" << std::endl << "Rendering" << std::endl;
     
 
 	//Render Scene
-    std::vector<float> rgb;
+    std::vector<Pixel> rgb;
     camera.render(ShapeList::getInstance(), rgb);
 
     //Create Image
@@ -154,22 +164,14 @@ int main()
     Colour c;
     
     //Loop through image and set all pixels
-    int i = 0;
-    for(int x = imageHeight; x > 0; x--){
-        for(int y = 0; y < imageWidth; y++){
-            c.r = ValidColor(rgb[i]);
-            c.g = ValidColor(rgb[i+1]);
-//            if(x % 10 == 0 || y % 10 == 0){
-//                c.b = 100;
-//            } else {
-                c.b = ValidColor(rgb[i+2]);
-//            }
-            c.a = 255;
-            img->setPixel(c, y, x);
-            i += 3;
-        }
+    for(Pixel p : rgb){
+        std::cout << p << std::endl;
+        c.r = ValidColor(p.r * 255);
+        c.g = ValidColor(p.g * 255);
+        c.b = ValidColor(p.b * 255);
+        c.a = 255;
+        img->setPixel(c, p.x, p.y);
     }
-    
     
     //write the image to disk
     string filename = "test.tga";
