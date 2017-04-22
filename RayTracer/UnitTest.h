@@ -16,7 +16,7 @@ bool SphereTest(){
     
     Sphere *ball = new Sphere({0,0,0}, 9, blue);
     Ray r = Ray{Point{0,0,0}, Vector{1,1,1}};
-    auto hit = ball->hit(r);
+    auto hit = ball->hit(r,0);
     
     auto box = ball->getBoundingBox();
     
@@ -28,25 +28,25 @@ bool TriangleTest(){
     
     {
         Ray r = Ray{Point{0,0,-1}, Vector{0,0,1}};
-        auto hit = tri->hit(r);
+        auto hit = tri->hit(r,0);
         std::cout << (hit ? hit->t:-1.0f);
     }
     
     {
         Ray r = Ray{Point{0,0,-1}, Vector{1,0,1}};
-        auto hit = tri->hit(r);
+        auto hit = tri->hit(r,0);
         std::cout << (hit ? hit->t:-1.0f);
     }
     
     {
         Ray r = Ray{Point{0,0,-1}, Vector{0,1,1}};
-        auto hit = tri->hit(r);
+        auto hit = tri->hit(r,0);
         std::cout << (hit ? hit->t:-1.0f);
     }
     
     {
         Ray r = Ray{Point{0,0,-1}, Vector{0.3, 0.3, 1}};
-        auto hit = tri->hit(r);
+        auto hit = tri->hit(r,0);
         std::cout << (hit ? hit->t:-1.0f);
     }
     
@@ -54,7 +54,7 @@ bool TriangleTest(){
     
     {
         Ray r = Ray{Point{0,0,1}, Vector{0.3, 0.3, -1}};
-        auto hit = tri->hit(r);
+        auto hit = tri->hit(r,0);
         std::cout << (hit ? hit->t:-1.0f);
     }
     
@@ -85,7 +85,7 @@ bool BvhTest(){
     
     Ray r = Ray{Point{0,0,-10}, Vector{0,0,1}};
     
-    auto hit = bvh->hit(r);
+    auto hit = bvh->hit(r,0);
     return true;
     
 }

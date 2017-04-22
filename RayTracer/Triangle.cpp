@@ -10,10 +10,10 @@
 #include "utils.h"
 #include <iostream>
 
-#define T_EPSILON  0.03
+#define T_EPSILON  0.1
 //#define T_EPSILON2 0.1
 
-#define E_EPSILON  0.000001
+#define E_EPSILON  0.001
 
 Triangle::~Triangle(){}
 
@@ -139,5 +139,5 @@ std::unique_ptr<HitRecord> Triangle::intersect(Ray r) const{
     tval = -(F*AKJB + E*JCAL + D*BLKC) * denom;
     
     Vector normal = cross((b-a), (c-a));
-    return make_unique<HitRecord>(tval, normal, color);
+    return make_unique<HitRecord>(tval, normal, color, isGlass);
 }

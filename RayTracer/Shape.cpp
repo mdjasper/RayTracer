@@ -3,7 +3,7 @@
 #include <iostream>
 //#include <cmath>
 
-
+#define MAX_RAY_DEPTH 3
 
 Shape::~Shape(){}
 
@@ -14,11 +14,22 @@ bool Shape::hitP(Ray r)const {
 }
 
 std::unique_ptr<HitRecord> Shape::hit(Ray r)const {
+    return hit(r, MAX_RAY_DEPTH);
+}
+
+std::unique_ptr<HitRecord> Shape::hit(Ray r, int depth)const {
 	if (!::intersect(r, getBoundingBox())) return nullptr;
-	auto i = intersect(r);
+    auto i = intersect(r);
 	if (i){
 		//check lighting
 		auto intersectPoint = r.o + r.d * i->t;
+        
+        if(i->isGlass && depth == 0){
+            Vector refractionVector = r.d - i->normal;
+            Ray refractionRay = * new Ray{intersectPoint, refractionVector};
+            i = ShapeList::getInstance().hit(refractionRay, depth + 1);
+        } else {
+        
 		//For each light
         
 		//create a new ray from the intersect point to the light
@@ -30,7 +41,7 @@ std::unique_ptr<HitRecord> Shape::hit(Ray r)const {
         //if the camera->shape ray also reaches the light source:
         //to create shadows
         auto lightHit = ShapeList::getInstance().hitP(l);
-        float ambient = 0.5;
+        float ambient = 0.4;
         
         if(!lightHit){
             //no shapes in the way
@@ -57,6 +68,8 @@ std::unique_ptr<HitRecord> Shape::hit(Ray r)const {
             i->c.g *= ambient;
             i->c.b *= ambient;
         }
+        }
     }
+    
 	return i;
 }

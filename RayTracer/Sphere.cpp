@@ -12,6 +12,8 @@
 #include <math.h>
 #include <iostream>
 
+#define EPSILON  0.1
+
 Sphere::~Sphere(){
 //    std::cout << "sphere delete called" << std::endl;
 }
@@ -46,11 +48,11 @@ bool Sphere::intersectP(Ray r) const {
     float C = dot(w,w) - (radius*radius);
     float D = (B*B) - (4.0f * A * C);
     
-    if(D < 0.0001f){
-        return false;
-    }
+    if(D < EPSILON) return false;
     
     float t = (-B + sqrt(D))/(2.0f*A);
+    
+    if(t < EPSILON) return false;
     
     return t > 0;
     
@@ -68,20 +70,19 @@ std::unique_ptr<HitRecord> Sphere::intersect(Ray r) const
     float D = (B*B) - (4.0f * A * C);
     
     
-    if(D < 0.0f){
-        //no intersections
-//        std::cout << "no intersections";
-        return nullptr;
-    } else {
-        //an intersection
-        //solve pathagorean theorm to find intersection
-        float t = (-B + sqrt(D))/(2.0f*A);
+    if(D < 0.0f) return nullptr;
+    
         
-        //point of the intersection
-        Point PHit = r.o + (r.d * t);
-        //normal of the intersection
-        Vector NHit = normalize(PHit - origin);
-//        std::cout << "Sphere D:" << D << "\t Sphere t: " << t << "\n";
-        return make_unique<HitRecord>(t, NHit, color);
-    }
+    //an intersection
+    //solve pathagorean theorm to find intersection
+    float t = (-B + sqrt(D))/(2.0f*A);
+    
+    if(t< EPSILON) return nullptr;
+    
+    //point of the intersection
+    Point PHit = r.o + (r.d * t);
+    //normal of the intersection
+    Vector NHit = normalize(PHit - origin);
+
+    return make_unique<HitRecord>(t, NHit, color);
 }

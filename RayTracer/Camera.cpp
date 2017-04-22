@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <thread>
+#include <random>
 #include "ShapeList.hpp"
 
 std::mutex rgb_mutex;
@@ -19,36 +20,52 @@ std::mutex rgb_mutex;
                 std::vector<Pixel>* rgb,
                 Shape const* s){
     
+     float relfectivness = 1;
     
         for (int x = startX; x < endX; ++x) {
             for (int y = startY; y < endY; ++y) {
-                Point filmPoint = topLeft + perPixelV * static_cast<float>(y) + perPixelU * static_cast<float>(x);
-                Ray r = * new Ray{location, filmPoint - location};
-                auto hit = s->hit(r);
-                
-                
-                if(hit) {
+                int perPixel = 5;
+                float red = 0, green = 0, blue = 0;
+                //begin anti-alias loop
+                for(int px = 0; px < perPixel; px++){
+                for(int py = 0; py < perPixel; py++){
                     
-                    //determine reflection
-                    //R = 2(N dot L)N - L
-                    Vector R = (hit->normal * dot(hit->normal, r.d) * 2) - r.d;
+                    Point filmPoint = topLeft + perPixelV * static_cast<float>(y) + perPixelU * static_cast<float>(x);
+            
+                    Point newFilmPoint = {filmPoint.x + (perPixelV.x/perPixel)*px, filmPoint.y + (perPixelU.y/perPixel)*py, filmPoint.z};
+//                    std::cout << newFilmPoint << std::endl;
                     
-                    Ray refRay = * new Ray{r.o + r.d*hit->t, R};
-                    auto rf = ShapeList::getInstance().hit(refRay);
-                    if(rf){
-                        hit->c.r += rf->c.r;
-                        hit->c.g += rf->c.g;
-                        hit->c.b += rf->c.b;
-                    }
-                     
-                    rgb_mutex.lock();
-                    rgb->push_back({x,y, hit->c.r, hit->c.g, hit->c.b});
-                    rgb_mutex.unlock();
-                } else {
-                    rgb_mutex.lock();
-                    rgb->push_back({x,y, 0, 0, 0});
-                    rgb_mutex.unlock();
+                
+                    Ray r = * new Ray{newFilmPoint, newFilmPoint - location};
+                    auto hit = s->hit(r,0);
+                
+                    if(hit) {
+                    
+                        //determine reflection
+                        //R = 2(N dot L)N - L
+                        Vector R = ((hit->normal * dot(hit->normal, r.d)) * 2) - r.d;
+                    
+                        Ray refRay = * new Ray{r.o + r.d*hit->t, R};
+                        auto rf = ShapeList::getInstance().hit(refRay,0);
+                        if(rf){
+
+                            red += rf->c.r * relfectivness;
+                            green += rf->c.g * relfectivness;
+                            blue += rf->c.b * relfectivness;
+                        } else {
+                            red += hit->c.r;
+                            green += hit->c.g;
+                            blue += hit->c.b;
+                        }
+                        
+                    }}
                 }
+                red /= (perPixel*perPixel);
+                green /= (perPixel*perPixel);
+                blue /= (perPixel*perPixel);
+                rgb_mutex.lock();
+                rgb->push_back({x,y, red, green, blue});
+                rgb_mutex.unlock();
         }
     }
 }

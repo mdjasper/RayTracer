@@ -34,10 +34,10 @@ int main(){
     //Time the performance
     auto start = chrono::steady_clock::now();
     
-    int imageHeight = 100,
-    imageWidth = 100;
+    int imageHeight = 400,
+    imageWidth = 400;
     
-    Point cameraPosition = {0,1,15};
+    Point cameraPosition = {0,2,5};
     
     Vector cameraLook = {0,0,-1},
     cameraUp = {0,1,0};
@@ -47,7 +47,7 @@ int main(){
     
     
     try{
-        std::ifstream ss("/Users/mdjasper/Sites/sandbox/graphics2/RayTracer/RayTracer/tennis_shoe.ply", std::ios::binary);
+        std::ifstream ss("/Users/mdjasper/Sites/sandbox/graphics2/RayTracer/RayTracer/bun_zipper_res4.ply", std::ios::binary);
         
         PlyFile file(ss);
         
@@ -107,7 +107,7 @@ int main(){
         
         //Create Points from Vertices
         vector<Point> points;
-        float scale = 1;
+        float scale = 20;
         for(int i = 0; i < verts.size(); i += 3){
             points.push_back({verts[i] * scale, verts[i+1] * scale, verts[i+2] * scale});
         }
@@ -120,18 +120,20 @@ int main(){
                              points[ faces[i] ],
                              points[ faces[i+1] ],
                              points[ faces[i+2] ],
-                             green
+                             green,
+                             true
                     );
             
-            tp = new Triangle(
+            /*tp = new Triangle(
                              points[ faces[i+2] ],
                              points[ faces[i] ],
                              points[ faces[i+1] ],
-                             green
-                             );
+                             green,
+                              true
+                             );*/
             
             tree->addShape(std::unique_ptr<Shape>(t));
-            tree->addShape(std::unique_ptr<Shape>(tp));
+//            tree->addShape(std::unique_ptr<Shape>(tp));
         }
         
         tree->balance();
@@ -142,13 +144,15 @@ int main(){
         std::cerr << "Caught exception: " << e.what() << std::endl;
     }
     
+//    Triangle * ground0 = new Triangle({0,0,7},{100,0,-100},{-100,0,-100},blue);
+//    ShapeList::getInstance().addShape(std::unique_ptr<Shape>(ground0));
     
-    
-    Sphere * redBall = new Sphere({1,5,-4}, 3, red);
+    Sphere * redBall = new Sphere({0,3,-5}, 2, red);
     ShapeList::getInstance().addShape(std::unique_ptr<Shape>(redBall));
     
-//    Sphere * blueBall = new Sphere({3,3,0}, 2, blue);
-//    ShapeList::getInstance().addShape(std::unique_ptr<Shape>(blueBall));
+    
+    
+    
     
     std::cout << "Tree balanced" << std::endl << "Rendering" << std::endl;
     
@@ -165,7 +169,7 @@ int main(){
     
     //Loop through image and set all pixels
     for(Pixel p : rgb){
-        std::cout << p << std::endl;
+//        std::cout << p << std::endl;
         c.r = ValidColor(p.r * 255);
         c.g = ValidColor(p.g * 255);
         c.b = ValidColor(p.b * 255);
