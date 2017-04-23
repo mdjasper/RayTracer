@@ -24,52 +24,65 @@ std::unique_ptr<HitRecord> Shape::hit(Ray r, int depth)const {
 		//check lighting
 		auto intersectPoint = r.o + r.d * i->t;
         
-        if(i->isGlass && depth == 0){
-            Vector refractionVector = r.d - i->normal;
-            Ray refractionRay = * new Ray{intersectPoint, refractionVector};
-            i = ShapeList::getInstance().hit(refractionRay, depth + 1);
-        } else {
+//        if(i->isGlass && depth == 0){
+//            Vector refractionVector = r.d - i->normal;
+//            Ray refractionRay = * new Ray{intersectPoint, refractionVector};
+//            i = ShapeList::getInstance().hit(refractionRay, depth + 1);
+//        } else {
         
-		//For each light
-        
-		//create a new ray from the intersect point to the light
-        Point lightLocation{0, 100, 0}; //TODO get this from scene
-        Vector lightDirection = lightLocation - intersectPoint;
-        //Point LightTestPoint = intersectPoint + normalize(lightDirection) * 0.0001;
-        Ray l = * new Ray{intersectPoint, lightDirection};
-        
-        //if the camera->shape ray also reaches the light source:
-        //to create shadows
-        auto lightHit = ShapeList::getInstance().hitP(l);
-        float ambient = 0.4;
-        
-        if(!lightHit){
-            //no shapes in the way
-            //hit can see the light
-            float lightAngle = dot(normalize(lightDirection), normalize(i->normal));
-  //      std::cout << lightAngle << std::endl;
+            //For each light
             
-            if(lightAngle < 0){
-                lightAngle = 0;
-            }
+            //create a new ray from the intersect point to the light
+            Point lightLocation{1, 50, 1}; //TODO get this from scene
             
+            int lightSize = 5;
+            float red = 0, green = 0, blue = 0;
+            for(int ix = 0; ix < lightSize; ix += 1){
+            for(int iz = 0; iz < lightSize; iz += 1){
+                
+                Point newLightLocation = {lightLocation.x + ix*2, lightLocation.y, lightLocation.z + iz*2};
             
-        
-            float reduction =lightAngle * (1-ambient) + ambient;
-            //std::cout << reduction << std::endl;
-        
-            i->c.r *= reduction;
-            i->c.g *= reduction;
-            i->c.b *= reduction;
-        } else {
-            //light is obstructed
-//            std::cout << "light ray hit an object" << std::endl;
-            i->c.r *= ambient;
-            i->c.g *= ambient;
-            i->c.b *= ambient;
+                Vector lightDirection = newLightLocation - intersectPoint;
+                //Point LightTestPoint = intersectPoint + normalize(lightDirection) * 0.0001;
+                Ray l = * new Ray{intersectPoint, lightDirection};
+                
+                //if the camera->shape ray also reaches the light source:
+                //to create shadows
+                auto lightHit = ShapeList::getInstance().hitP(l);
+                float ambient = 0.3;
+                
+                if(!lightHit){
+                    //no shapes in the way
+                    //hit can see the light
+                    float lightAngle = dot(normalize(lightDirection), normalize(i->normal));
+          //      std::cout << lightAngle << std::endl;
+                    
+                    if(lightAngle < 0){
+                        lightAngle = 0;
+                    }
+                    
+                    
+                
+                    float reduction = lightAngle * (1-ambient) + ambient;
+                    //std::cout << reduction << std::endl;
+                
+                    red += reduction;
+                    green += reduction;
+                    blue += reduction;
+                } else {
+                    //light is obstructed
+        //            std::cout << "light ray hit an object" << std::endl;
+                    red += ambient;
+                    green += ambient;
+                    blue += ambient;
+//                    i->c.b *= ambient;
+                }
+            }}
+            i->c.r *= red / (lightSize*lightSize);
+            i->c.g *= green / (lightSize*lightSize);
+            i->c.b *= blue / (lightSize*lightSize);
         }
-        }
-    }
+//    }
     
 	return i;
 }

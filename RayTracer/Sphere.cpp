@@ -12,7 +12,7 @@
 #include <math.h>
 #include <iostream>
 
-#define EPSILON  0.1
+#define EPSILON  0.2
 
 Sphere::~Sphere(){
 //    std::cout << "sphere delete called" << std::endl;

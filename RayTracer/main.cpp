@@ -34,8 +34,8 @@ int main(){
     //Time the performance
     auto start = chrono::steady_clock::now();
     
-    int imageHeight = 400,
-    imageWidth = 400;
+    int imageHeight = 50,
+    imageWidth = 50;
     
     Point cameraPosition = {0,2,5};
     
@@ -47,7 +47,7 @@ int main(){
     
     
     try{
-        std::ifstream ss("/Users/mdjasper/Sites/sandbox/graphics2/RayTracer/RayTracer/bun_zipper_res4.ply", std::ios::binary);
+        std::ifstream ss("/Users/mdjasper/Sites/sandbox/graphics2/RayTracer/RayTracer/dragon_vrip_res4.ply", std::ios::binary);
         
         PlyFile file(ss);
         
@@ -107,30 +107,23 @@ int main(){
         
         //Create Points from Vertices
         vector<Point> points;
-        float scale = 20;
+        float scale = 15;
         for(int i = 0; i < verts.size(); i += 3){
-            points.push_back({verts[i] * scale, verts[i+1] * scale, verts[i+2] * scale});
+            points.push_back({verts[i] * scale, verts[i+1] * scale, (verts[i+2] * scale) + 1.0f});
         }
         
         Triangle *t;
-        Triangle *tp;
         for(int i = 0; i < faces.size(); i += 3){
             //std::cout << points[faces[i]] << points[faces[i+1]] << points[faces[i+2]] << std::endl;
             t = new Triangle(
                              points[ faces[i] ],
                              points[ faces[i+1] ],
                              points[ faces[i+2] ],
-                             green,
+                             yellow,
                              true
                     );
             
-            /*tp = new Triangle(
-                             points[ faces[i+2] ],
-                             points[ faces[i] ],
-                             points[ faces[i+1] ],
-                             green,
-                              true
-                             );*/
+ 
             
             tree->addShape(std::unique_ptr<Shape>(t));
 //            tree->addShape(std::unique_ptr<Shape>(tp));
@@ -139,19 +132,26 @@ int main(){
         tree->balance();
         
         ShapeList::getInstance().addShape(std::unique_ptr<Shape>(tree));
-        
+    
     } catch (const std::exception & e) {
         std::cerr << "Caught exception: " << e.what() << std::endl;
     }
-    
+ 
+        
 //    Triangle * ground0 = new Triangle({0,0,7},{100,0,-100},{-100,0,-100},blue);
 //    ShapeList::getInstance().addShape(std::unique_ptr<Shape>(ground0));
     
-    Sphere * redBall = new Sphere({0,3,-5}, 2, red);
+//    Sphere * blueBall = new Sphere({-10,10,-20}, 5, yellow);
+//    ShapeList::getInstance().addShape(std::unique_ptr<Shape>(blueBall));
+    
+    Sphere * redBall = new Sphere({0,0,3}, 2, red);
     ShapeList::getInstance().addShape(std::unique_ptr<Shape>(redBall));
     
+//    Sphere * greenBall = new Sphere({0.5,2.5,2.5}, 0.25, green);
+//    ShapeList::getInstance().addShape(std::unique_ptr<Shape>(greenBall));
     
-    
+//    Sphere * blueBall2 = new Sphere({-1.2,1.5,4}, 1, blue);
+//    ShapeList::getInstance().addShape(std::unique_ptr<Shape>(blueBall2));
     
     
     std::cout << "Tree balanced" << std::endl << "Rendering" << std::endl;

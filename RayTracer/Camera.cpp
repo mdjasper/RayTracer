@@ -24,7 +24,7 @@ std::mutex rgb_mutex;
     
         for (int x = startX; x < endX; ++x) {
             for (int y = startY; y < endY; ++y) {
-                int perPixel = 5;
+                int perPixel = 10;
                 float red = 0, green = 0, blue = 0;
                 //begin anti-alias loop
                 for(int px = 0; px < perPixel; px++){
@@ -35,28 +35,30 @@ std::mutex rgb_mutex;
                     Point newFilmPoint = {filmPoint.x + (perPixelV.x/perPixel)*px, filmPoint.y + (perPixelU.y/perPixel)*py, filmPoint.z};
 //                    std::cout << newFilmPoint << std::endl;
                     
+                    Point newLocation = {location.x + (0.03f/perPixel)*px, location.y + (0.03f/perPixel)*py, location.z};
+                    
                 
-                    Ray r = * new Ray{newFilmPoint, newFilmPoint - location};
+                    Ray r = * new Ray{newFilmPoint, newFilmPoint - newLocation};
                     auto hit = s->hit(r,0);
                 
                     if(hit) {
                     
                         //determine reflection
                         //R = 2(N dot L)N - L
-                        Vector R = ((hit->normal * dot(hit->normal, r.d)) * 2) - r.d;
+//                        Vector R = ((hit->normal * dot(hit->normal, r.d)) * 2) - r.d;
                     
-                        Ray refRay = * new Ray{r.o + r.d*hit->t, R};
-                        auto rf = ShapeList::getInstance().hit(refRay,0);
-                        if(rf){
+//                        Ray refRay = * new Ray{r.o + r.d*hit->t, R};
+//                        auto rf = ShapeList::getInstance().hit(refRay,0);
+//                        if(rf){
 
-                            red += rf->c.r * relfectivness;
-                            green += rf->c.g * relfectivness;
-                            blue += rf->c.b * relfectivness;
-                        } else {
+//                            red += rf->c.r * relfectivness;
+//                            green += rf->c.g * relfectivness;
+//                            blue += rf->c.b * relfectivness;
+//                        } else {
                             red += hit->c.r;
                             green += hit->c.g;
                             blue += hit->c.b;
-                        }
+//                        }
                         
                     }}
                 }
